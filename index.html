@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GoodWe Australia — Warranty CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS — GoodWe Red Palette
+   ═══════════════════════════════════════════ */
+:root {
+  /* Primary Red Palette */
+  --red-50:  #FFF1F0;
+  --red-100: #FFDEDD;
+  --red-200: #FFB4B2;
+  --red-400: #F05454;
+  --red-500: #D93B3B;
+  --red-600: #B52828;
+  --red-800: #7A1414;
+  --red-900: #4A0909;
+
+  /* Neutral Warm */
+  --ink-900: #1C1410;
+  --ink-800: #2E2420;
+  --ink-600: #5C4F4A;
+  --ink-400: #8C807C;
+  --ink-200: #C8C0BB;
+  --ink-100: #E8E2DE;
+  --ink-50:  #F7F4F2;
+  --ink-20:  #FCFAF8;
+
+  /* Semantic */
+  --success:     #0F6E56;
+  --success-bg:  #E1F5EE;
+  --warn:        #A05C10;
+  --warn-bg:     #FEF3E2;
+  --info:        #1557A0;
+  --info-bg:     #EBF3FF;
+  --danger:      #B52828;
+  --danger-bg:   #FFF1F0;
+  --purple:      #5340B0;
+  --purple-bg:   #F0ECFF;
+
+  /* Typography */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+
+  /* Layout */
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+
+  /* Sidebar */
+  --sidebar-w: 228px;
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--font-body);
+  background: var(--ink-50);
+  color: var(--ink-900);
+  min-height: 100vh;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: var(--font-body); cursor: pointer; }
+input, select, textarea { font-family: var(--font-body); }
+
+/* ═══════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--ink-200); border-radius: 99px; }
+
+/* ═══════════════════════════════════════════
+   APP SHELL
+   ═══════════════════════════════════════════ */
+#app { min-height: 100vh; }
+
+/* ═══════════════════════════════════════════
+   LOGIN PAGE
+   ═══════════════════════════════════════════ */
+#login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(217,59,59,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 90% 80%, rgba(181,40,40,0.06) 0%, transparent 60%),
+    var(--ink-50);
+}
+.login-bg-pattern {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+.login-bg-pattern::before {
+  content: '';
+  position: absolute;
+  top: -20%; right: -10%;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(217,59,59,0.07) 0%, transparent 70%);
+}
+.login-bg-pattern::after {
+  content: '';
+  position: absolute;
+  bottom: -10%; left: -5%;
+  width: 400px; height: 400px;
+  border: 1.5px solid rgba(217,59,59,0.08);
+  border-radius: 50%;
+}
+
+.login-wrap {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 4rem;
+  max-width: 900px;
+  width: 100%;
+  align-items: center;
+}
+@media (max-width: 720px) {
+  .login-wrap { grid-template-columns: 1fr; gap: 2rem; }
+  .login-hero { display: none; }
+}
+
+/* Hero side */
+.login-hero {}
+.lh-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--red-50); border: 1px solid var(--red-100);
+  color: var(--red-600); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.6px; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 99px; margin-bottom: 1.5rem;
+}
+.lh-badge span {
+  width: 6px; height: 6px; background: var(--red-500); border-radius: 50%;
+}
+.lh-title {
+  font-family: var(--font-display);
+  font-size: 3rem; font-weight: 700; line-height: 1.1;
+  color: var(--ink-900); margin-bottom: 1rem;
+}
+.lh-title em { font-style: italic; color: var(--red-500); }
+.lh-desc { font-size: 14px; color: var(--ink-600); line-height: 1.6; margin-bottom: 2rem; }
+.lh-stats { display: flex; gap: 2rem; }
+.lh-stat-val {
+  font-family: var(--font-display); font-size: 1.75rem; font-weight: 700;
+  color: var(--ink-900);
+}
+.lh-stat-key { font-size: 11px; color: var(--ink-400); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Card */
+.login-card {
+  background: white;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--ink-100);
+  padding: 2.25rem 2rem;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+}
+.lc-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 1.75rem; }
+.lc-icon {
+  width: 38px; height: 38px; background: var(--red-500);
+  border-radius: 9px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.lc-icon svg { width: 20px; height: 20px; }
+.lc-name { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--ink-900); }
+.lc-sub { font-size: 11px; color: var(--ink-400); letter-spacing: 0.3px; }
+
+.lc-h { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin-bottom: 0.3rem; }
+.lc-p { font-size: 12px; color: var(--ink-400); margin-bottom: 1.5rem; }
+
+.role-sel { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 1.25rem; }
+.role-opt {
+  border: 1.5px solid var(--ink-100); border-radius: var(--radius);
+  padding: 10px 6px; text-align: center; cursor: pointer;
+  background: var(--ink-50); transition: all 0.15s;
+}
+.role-opt:hover { border-color: var(--red-300, var(--red-200)); }
+.role-opt.sel { border-color: var(--red-500); background: var(--red-50); }
+.ro-icon { font-size: 1.3rem; margin-bottom: 4px; line-height: 1; }
+.ro-label { font-size: 11px; font-weight: 600; color: var(--ink-600); }
+.role-opt.sel .ro-label { color: var(--red-600); }
+
+.field-group { margin-bottom: 1rem; }
+.field-label { font-size: 11px; font-weight: 600; color: var(--ink-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; display: block; }
+.field-input {
+  width: 100%; padding: 10px 13px; font-size: 13.5px;
+  border: 1px solid var(--ink-200); border-radius: var(--radius);
+  background: var(--ink-50); color: var(--ink-900); outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.field-input:focus { border-color: var(--red-400); background: white; box-shadow: 0 0 0 3px rgba(217,59,59,0.08); }
+
+.login-btn {
+  width: 100%; padding: 11px; background: var(--red-500); color: white;
+  border: none; border-radius: var(--radius); font-size: 14px; font-weight: 600;
+  letter-spacing: 0.2px; margin-top: 0.25rem;
+  transition: background 0.15s, transform 0.1s;
+}
+.login-btn:hover { background: var(--red-600); }
+.login-btn:active { transform: scale(0.99); }
+.login-err { font-size: 12px; color: var(--red-500); margin-top: 8px; text-align: center; min-height: 16px; }
+.login-hint { font-size: 11px; color: var(--ink-400); text-align: center; margin-top: 1rem; }
+
+/* ═══════════════════════════════════════════
+   DASHBOARD LAYOUT
+   ═══════════════════════════════════════════ */
+#dash-page { display: none; min-height: 100vh; }
+
+.layout { display: flex; min-height: 100vh; }
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-w); min-width: var(--sidebar-w);
+  background: var(--ink-900);
+  display: flex; flex-direction: column;
+  position: fixed; top: 0; left: 0; bottom: 0;
+  z-index: 50;
+}
+.sb-header {
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.sb-brand { display: flex; align-items: center; gap: 10px; }
+.sb-icon {
+  width: 34px; height: 34px; background: var(--red-500);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.sb-icon svg { width: 17px; height: 17px; }
+.sb-brand-name { font-family: var(--font-display); font-size: 14.5px; font-weight: 700; color: white; }
+.sb-brand-sub { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 0.4px; }
+
+.sb-nav { flex: 1; padding: 1rem 0.75rem; overflow-y: auto; }
+.sb-section-label {
+  font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.25);
+  text-transform: uppercase; letter-spacing: 0.8px;
+  padding: 0.75rem 0.5rem 0.4rem;
+}
+.sb-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 10px; border-radius: 8px;
+  color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 400;
+  cursor: pointer; transition: all 0.12s; margin-bottom: 2px; position: relative;
+}
+.sb-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
+.sb-item.active { background: rgba(217,59,59,0.2); color: white; }
+.sb-item.active::before {
+  content: '';
+  position: absolute; left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 18px;
+  background: var(--red-400); border-radius: 0 3px 3px 0;
+}
+.sb-item-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.7; }
+.sb-item.active .sb-item-icon { opacity: 1; }
+.sb-badge {
+  margin-left: auto; font-size: 10px; font-weight: 600;
+  background: var(--red-500); color: white; padding: 2px 7px; border-radius: 99px;
+}
+
+.sb-footer {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.sb-user { display: flex; align-items: center; gap: 10px; }
+.sb-av {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: white; flex-shrink: 0;
+}
+.sb-uname { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); }
+.sb-urole { font-size: 10px; color: rgba(255,255,255,0.3); }
+.sb-logout-btn {
+  margin-left: auto; background: none; border: none;
+  color: rgba(255,255,255,0.25); padding: 4px;
+  border-radius: 6px; transition: color 0.12s;
+}
+.sb-logout-btn:hover { color: rgba(255,255,255,0.7); }
+
+/* Main */
+.main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+.topbar {
+  background: white; border-bottom: 1px solid var(--ink-100);
+  padding: 0.85rem 1.75rem;
+  display: flex; align-items: center; gap: 1rem;
+  position: sticky; top: 0; z-index: 40;
+}
+.topbar-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--ink-900); }
+.topbar-sub { font-size: 12px; color: var(--ink-400); margin-left: 6px; }
+.topbar-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+
+.content-area { flex: 1; padding: 1.5rem 1.75rem; }
+
+/* ═══════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--radius);
+  font-size: 13px; font-weight: 500; border: none;
+  transition: all 0.12s; white-space: nowrap;
+}
+.btn-red { background: var(--red-500); color: white; }
+.btn-red:hover { background: var(--red-600); }
+.btn-ghost { background: transparent; color: var(--ink-700, var(--ink-600)); border: 1px solid var(--ink-200); }
+.btn-ghost:hover { background: var(--ink-50); }
+.btn-sm { padding: 5px 10px; font-size: 12px; border-radius: var(--radius-sm); }
+.btn-approve { background: var(--success-bg); color: var(--success); border: none; }
+.btn-approve:hover { background: #c7eede; }
+.btn-reject { background: var(--danger-bg); color: var(--danger); border: none; }
+.btn-reject:hover { background: #ffd9d9; }
+.btn-rma { background: var(--purple-bg); color: var(--purple); border: none; }
+.btn-rma:hover { background: #e0d8ff; }
+
+/* ═══════════════════════════════════════════
+   CARDS
+   ═══════════════════════════════════════════ */
+.card {
+  background: white; border: 1px solid var(--ink-100);
+  border-radius: var(--radius-lg); overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.card-head {
+  padding: 1rem 1.25rem; border-bottom: 1px solid var(--ink-100);
+  display: flex; align-items: center; gap: 10px;
+}
+.card-title { font-family: var(--font-display); font-size: 14px; font-weight: 600; }
+.card-body { padding: 1.25rem; }
+.card-body-0 { padding: 0; }
+
+/* Stat cards */
+.stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin-bottom: 1.5rem; }
+@media (max-width: 900px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+
+.stat-card {
+  background: white; border: 1px solid var(--ink-100);
+  border-radius: var(--radius); padding: 1.1rem;
+  position: relative; overflow: hidden;
+}
+.stat-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: var(--accent, var(--ink-200));
+}
+.sc-label { font-size: 11px; color: var(--ink-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.sc-val { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--ink-900); }
+.sc-delta { font-size: 11px; margin-top: 4px; }
+.up { color: var(--success); }
+.warn-text { color: var(--warn); }
+
+/* ═══════════════════════════════════════════
+   TABLE
+   ═══════════════════════════════════════════ */
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th {
+  padding: 9px 14px; text-align: left;
+  font-size: 10.5px; font-weight: 600; color: var(--ink-400);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  background: var(--ink-50); border-bottom: 1px solid var(--ink-100);
+  white-space: nowrap;
+}
+tbody td {
+  padding: 10px 14px; border-bottom: 1px solid var(--ink-50);
+  vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--ink-20, #FCFAF8); }
+.mono { font-family: 'Courier New', monospace; font-size: 11.5px; }
+.cl-id { color: var(--red-600); font-weight: 600; }
+
+/* ═══════════════════════════════════════════
+   BADGES
+   ═══════════════════════════════════════════ */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 9px; border-radius: 99px;
+  font-size: 11px; font-weight: 600; white-space: nowrap;
+}
+.b-pending  { background: var(--warn-bg);    color: var(--warn);    }
+.b-approved { background: var(--success-bg); color: var(--success); }
+.b-review   { background: var(--info-bg);    color: var(--info);    }
+.b-rejected { background: var(--danger-bg);  color: var(--danger);  }
+.b-rma      { background: var(--purple-bg);  color: var(--purple);  }
+.b-new      { background: var(--red-50);     color: var(--red-600); }
+
+/* Priority */
+.pri-high   { color: var(--danger);  font-weight: 600; font-size: 12px; }
+.pri-medium { color: var(--warn);    font-weight: 600; font-size: 12px; }
+.pri-low    { color: var(--ink-400); font-weight: 600; font-size: 12px; }
+
+/* ═══════════════════════════════════════════
+   FORM ELEMENTS
+   ═══════════════════════════════════════════ */
+.form-panel {
+  background: white; border: 1px solid var(--ink-100);
+  border-radius: var(--radius-lg); padding: 1.5rem;
+}
+.form-section-title {
+  font-size: 11px; font-weight: 700; color: var(--ink-400);
+  text-transform: uppercase; letter-spacing: 0.7px;
+  padding-bottom: 0.75rem; border-bottom: 1px solid var(--ink-100);
+  margin-bottom: 1.25rem; margin-top: 1.25rem;
+}
+.form-section-title:first-child { margin-top: 0; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.form-grid.one { grid-template-columns: 1fr; }
+.form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+@media (max-width: 680px) { .form-grid, .form-grid.three { grid-template-columns: 1fr; } }
+.fg { display: flex; flex-direction: column; gap: 5px; }
+.fg label { font-size: 11px; font-weight: 600; color: var(--ink-400); text-transform: uppercase; letter-spacing: 0.5px; }
+.fg input, .fg select, .fg textarea {
+  padding: 9px 12px; font-size: 13.5px;
+  border: 1px solid var(--ink-200); border-radius: var(--radius);
+  background: var(--ink-50); color: var(--ink-900); outline: none;
+  transition: border-color 0.15s;
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus {
+  border-color: var(--red-400); background: white;
+  box-shadow: 0 0 0 3px rgba(217,59,59,0.07);
+}
+.fg textarea { resize: vertical; min-height: 90px; }
+.fg select { appearance: none; cursor: pointer; }
+
+/* Upload zone */
+.upload-zone {
+  border: 2px dashed var(--ink-200); border-radius: var(--radius);
+  padding: 1.75rem 1rem; text-align: center;
+  cursor: pointer; transition: all 0.15s;
+  background: var(--ink-50);
+}
+.upload-zone:hover { border-color: var(--red-400); background: var(--red-50); }
+.upload-zone.dragover { border-color: var(--red-500); background: var(--red-50); }
+.uz-icon { font-size: 2rem; margin-bottom: 8px; }
+.uz-text { font-size: 13px; color: var(--ink-600); }
+.uz-hint { font-size: 11px; color: var(--ink-400); margin-top: 4px; }
+.photo-previews { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.photo-thumb {
+  width: 72px; height: 72px; border-radius: var(--radius);
+  object-fit: cover; border: 1px solid var(--ink-200); position: relative;
+}
+.photo-thumb-wrap { position: relative; display: inline-block; }
+.photo-remove {
+  position: absolute; top: -5px; right: -5px;
+  width: 18px; height: 18px; background: var(--red-500);
+  border: none; border-radius: 50%; color: white; font-size: 11px;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+
+/* ═══════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(28,20,16,0.45);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200; padding: 1rem;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal-box {
+  background: white; border-radius: var(--radius-xl);
+  padding: 2rem; width: 100%; max-width: 560px;
+  max-height: 88vh; overflow-y: auto;
+  position: relative; transform: translateY(8px);
+  transition: transform 0.2s;
+}
+.modal-overlay.open .modal-box { transform: translateY(0); }
+.modal-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem; }
+.modal-close {
+  position: absolute; top: 1.25rem; right: 1.25rem;
+  background: var(--ink-100); border: none; border-radius: 50%;
+  width: 28px; height: 28px; font-size: 14px; color: var(--ink-600);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background 0.12s;
+}
+.modal-close:hover { background: var(--ink-200); }
+
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.drow {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 10px 0; border-bottom: 1px solid var(--ink-50);
+}
+.drow:nth-child(odd) { padding-right: 1.5rem; }
+.drow:nth-child(even) { padding-left: 1.5rem; border-left: 1px solid var(--ink-100); }
+.dkey { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: var(--ink-400); }
+.dval { font-size: 13px; font-weight: 500; color: var(--ink-900); }
+
+.photo-modal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+.photo-modal-cell {
+  aspect-ratio: 1; border-radius: var(--radius);
+  border: 1px solid var(--ink-100); overflow: hidden;
+  background: var(--ink-50); display: flex; align-items: center; justify-content: center;
+}
+.photo-modal-cell img { width: 100%; height: 100%; object-fit: cover; }
+.photo-modal-cell .ph-placeholder { font-size: 2rem; }
+
+/* ═══════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
+  display: flex; align-items: center; gap: 10px;
+  background: var(--ink-900); color: white;
+  padding: 11px 18px; border-radius: var(--radius);
+  font-size: 13px; z-index: 300;
+  transform: translateY(20px); opacity: 0;
+  transition: all 0.25s; pointer-events: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-icon { width: 8px; height: 8px; background: var(--red-400); border-radius: 50%; flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════
+   USER CARDS
+   ═══════════════════════════════════════════ */
+.user-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 680px) { .user-grid-2 { grid-template-columns: 1fr; } }
+.user-card {
+  background: white; border: 1px solid var(--ink-100);
+  border-radius: var(--radius); padding: 1rem;
+  display: flex; align-items: center; gap: 12px;
+}
+.u-av {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: white; flex-shrink: 0;
+}
+.u-name { font-size: 13.5px; font-weight: 600; }
+.u-email { font-size: 11px; color: var(--ink-400); }
+.u-actions { margin-left: auto; display: flex; gap: 6px; }
+
+/* ═══════════════════════════════════════════
+   FILTER BAR
+   ═══════════════════════════════════════════ */
+.filter-bar { display: flex; gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap; align-items: center; }
+.filter-input {
+  padding: 8px 12px; font-size: 13px;
+  border: 1px solid var(--ink-200); border-radius: var(--radius);
+  background: white; outline: none; color: var(--ink-900);
+  transition: border-color 0.15s;
+}
+.filter-input:focus { border-color: var(--red-400); }
+.filter-input.wide { min-width: 200px; }
+
+/* ═══════════════════════════════════════════
+   ANALYTICS
+   ═══════════════════════════════════════════ */
+.chart-bar-wrap { display: flex; flex-direction: column; gap: 10px; padding: 0.25rem 0; }
+.chart-bar-row { display: flex; align-items: center; gap: 12px; }
+.cbr-label { font-size: 12px; color: var(--ink-600); width: 90px; flex-shrink: 0; text-align: right; }
+.cbr-track {
+  flex: 1; height: 22px; background: var(--ink-50);
+  border-radius: 4px; overflow: hidden;
+}
+.cbr-fill {
+  height: 100%; border-radius: 4px;
+  background: var(--red-400);
+  transition: width 0.6s ease;
+  display: flex; align-items: center; justify-content: flex-end; padding-right: 8px;
+}
+.cbr-fill span { font-size: 11px; font-weight: 600; color: white; }
+
+/* ═══════════════════════════════════════════
+   NOTIFICATION LOG
+   ═══════════════════════════════════════════ */
+.notif-list { display: flex; flex-direction: column; gap: 0; }
+.notif-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 1.25rem; border-bottom: 1px solid var(--ink-50);
+}
+.notif-item:last-child { border-bottom: none; }
+.notif-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.notif-text { font-size: 13px; color: var(--ink-800, var(--ink-900)); line-height: 1.4; }
+.notif-time { font-size: 11px; color: var(--ink-400); margin-top: 2px; }
+
+/* ═══════════════════════════════════════════
+   PROGRESS RING (for dashboard)
+   ═══════════════════════════════════════════ */
+.progress-ring-wrap { display: flex; align-items: center; gap: 1.25rem; padding: 0.5rem 0; }
+.progress-ring svg { transform: rotate(-90deg); }
+.pr-label { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; }
+.pr-sub { font-size: 12px; color: var(--ink-400); }
+
+/* responsive tweaks */
+@media (max-width: 768px) {
+  .sidebar { width: 60px; }
+  .sb-brand-name, .sb-brand-sub, .sb-item span:not(.sb-badge), .sb-uname, .sb-urole, .sb-section-label { display: none; }
+  .main { margin-left: 60px; }
+}
+
+/* loading spinner */
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white; border-radius: 50%;
+  animation: spin 0.7s linear infinite; display: inline-block;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+<!-- ══════════════════════════════════════ LOGIN ══ -->
+<div id="login-page">
+  <div class="login-bg-pattern"></div>
+  <div class="login-wrap">
+    <div class="login-hero">
+      <div class="lh-badge"><span></span>Internal Staff Portal</div>
+      <div class="lh-title">GoodWe Warranty<br><em>RMA Request</em></div>
+      <p class="lh-desc">GoodWe Australia's internal warranty management portal. Submit, track, and process RMA requests for inverters, batteries, dataloggers and more — for staff use only.</p>
+      <div class="lh-stats">
+        <div>
+          <div class="lh-stat-val">500+</div>
+          <div class="lh-stat-key">Claims Resolved</div>
+        </div>
+        <div>
+          <div class="lh-stat-val">1.4d</div>
+          <div class="lh-stat-key">Avg Response</div>
+        </div>
+        <div>
+          <div class="lh-stat-val">98%</div>
+          <div class="lh-stat-key">Satisfaction</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-card">
+      <div class="lc-logo">
+        <div class="lc-icon">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 10L10 4L16 10L10 16L4 10Z" fill="white" opacity="0.85"/>
+            <circle cx="10" cy="10" r="2.5" fill="white"/>
+          </svg>
+        </div>
+        <div>
+          <div class="lc-name">GoodWe Australia</div>
+          <div class="lc-sub">Warranty CRM v1.0</div>
+        </div>
+      </div>
+      <div class="lc-h">Staff Sign In</div>
+      <div class="lc-p">Enter your GoodWe email and password</div>
+
+      <div class="field-group">
+        <label class="field-label">Email</label>
+        <input class="field-input" id="li-email" type="email" placeholder="you@goodwe.com.au" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Password</label>
+        <input class="field-input" id="li-pw" type="password" placeholder="••••••••"
+          onkeydown="if(event.key==='Enter')doLogin()" />
+      </div>
+      <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In</button>
+      <div class="login-err" id="login-err"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ DASHBOARD ══ -->
+<div id="dash-page">
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sb-header">
+        <div class="sb-brand">
+          <div class="sb-icon">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M4 10L10 4L16 10L10 16L4 10Z" fill="white" opacity="0.85"/><circle cx="10" cy="10" r="2.5" fill="white"/></svg>
+          </div>
+          <div>
+            <div class="sb-brand-name">GoodWe AU</div>
+            <div class="sb-brand-sub">Warranty CRM</div>
+          </div>
+        </div>
+      </div>
+      <div class="sb-nav" id="sb-nav"></div>
+      <div class="sb-footer">
+        <div class="sb-user">
+          <div class="sb-av" id="sb-av"></div>
+          <div>
+            <div class="sb-uname" id="sb-uname"></div>
+            <div class="sb-urole" id="sb-urole"></div>
+          </div>
+          <button class="sb-logout-btn" onclick="logout()" title="Sign out">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M6 14H3a1 1 0 01-1-1V3a1 1 0 011-1h3M11 11l3-3-3-3M14 8H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main area -->
+    <div class="main">
+      <div class="topbar">
+        <div>
+          <span class="topbar-title" id="tb-title">Dashboard</span>
+          <span class="topbar-sub" id="tb-sub"></span>
+        </div>
+        <div class="topbar-actions" id="tb-actions"></div>
+      </div>
+      <div class="content-area" id="content-area"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-inner"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <div class="toast-icon"></div>
+  <span id="toast-msg"></span>
+</div>
+
+</div><!-- #app -->
+
+<script>
+/* ══════════════════════════════════════════════
+   SUPABASE CONFIG
+   ▶ Paste your Project URL and anon key here
+   ▶ Get them from: Supabase → Project Settings → API
+══════════════════════════════════════════════ */
+const SUPABASE_URL  = 'https://hdsbmvnqxujqulvglwga.supabase.co';
+const SUPABASE_KEY  = 'sb_publishable_pQnqEhJITYfyz06Kfeg5tQ_PhRQWdTP';
+const USE_DATABASE  = SUPABASE_URL !== 'PASTE_YOUR_SUPABASE_URL_HERE';
+
+/* ══════════════════════════════════════════════
+   DATABASE LAYER
+   All reads/writes go through these functions.
+   Falls back to localStorage if no DB configured.
+══════════════════════════════════════════════ */
+const DB = {
+  headers: {
+    'Content-Type':  'application/json',
+    'apikey':        SUPABASE_KEY,
+    'Authorization': 'Bearer ' + SUPABASE_KEY,
+    'Prefer':        'return=representation'
+  },
+
+  async get(table, params = '') {
+    if (!USE_DATABASE) return null;
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}&order=created_at.desc`, { headers: this.headers });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    } catch(e) { console.error('DB.get error:', e); return null; }
+  },
+
+  async insert(table, row) {
+    if (!USE_DATABASE) return null;
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+        method: 'POST', headers: this.headers, body: JSON.stringify(row)
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    } catch(e) { console.error('DB.insert error:', e); return null; }
+  },
+
+  async update(table, id, patch) {
+    if (!USE_DATABASE) return null;
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`, {
+        method: 'PATCH', headers: this.headers, body: JSON.stringify(patch)
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return true;
+    } catch(e) { console.error('DB.update error:', e); return null; }
+  },
+
+  async delete(table, id) {
+    if (!USE_DATABASE) return null;
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`, {
+        method: 'DELETE', headers: this.headers
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return true;
+    } catch(e) { console.error('DB.delete error:', e); return null; }
+  }
+};
+
+/* Convert DB row (snake_case) → app object (camelCase) */
+function dbRowToClaim(r) {
+  return {
+    id: r.id, client: r.client, contact: r.contact, email: r.email, phone: r.phone,
+    productCategory: r.product_category, product: r.product, serial: r.serial,
+    faultCat: r.fault_cat, priority: r.priority, status: r.status, issue: r.issue,
+    errorCodes: r.error_codes, region: r.region, date: r.date,
+    tech: r.tech, techEmail: r.tech_email,
+    photos: r.photos || [], notes: r.notes || '',
+    comments: r.comments || [], rmaDetails: r.rma_details || null
+  };
+}
+
+function claimToDbRow(c) {
+  return {
+    id: c.id, client: c.client, contact: c.contact, email: c.email, phone: c.phone,
+    product_category: c.productCategory, product: c.product, serial: c.serial,
+    fault_cat: c.faultCat, priority: c.priority, status: c.status, issue: c.issue,
+    error_codes: c.errorCodes, region: c.region, date: c.date,
+    tech: c.tech, tech_email: c.techEmail,
+    photos: c.photos || [], notes: c.notes || '',
+    comments: c.comments || [], rma_details: c.rmaDetails || null
+  };
+}
+
+function dbRowToUser(r) {
+  return {
+    id: r.id, name: r.full_name, fullName: r.full_name, email: r.email,
+    password: r.password, role: r.role, region: r.region,
+    color: r.color, init: r.init, active: r.active
+  };
+}
+
+/* ══════════════════════════════════════════════
+   IN-MEMORY STATE (populated from DB on load)
+══════════════════════════════════════════════ */
+const LS_KEY = 'gw_crm_data_v2';
+
+// Fallback data used when no DB is configured
+const FALLBACK_DATA = {
+  claims: [
+    { id:'WCL-2024-001', client:'SunSmart Energy QLD', contact:'Mark Roper', email:'mark@sunsmart.com.au', phone:'0412 345 678', productCategory:'inverter', product:'GoodWe GW5000D-NS (5kW)', serial:'GW2023051234', faultCat:'No Output / Not Producing', priority:'High', status:'pending', issue:'Inverter not producing output after grid reconnect. Error E031 on screen.', errorCodes:'E031', region:'QLD', date:'12 Apr 2024', tech:'Marwin Yambao', techEmail:'marwinyambao@goodwe.com.au', photos:[], notes:'', comments:[], rmaDetails:null },
+    { id:'WCL-2024-002', client:'Green Solar VIC', contact:'Lena Park', email:'lena@greensolar.com.au', phone:'0423 456 789', productCategory:'inverter', product:'GoodWe GW10KT-DT (10kW)', serial:'GW2023078921', faultCat:'MPPT Fault', priority:'Medium', status:'approved', issue:'MPPT channel 2 abnormal voltage — 30% lower output than channel 1.', errorCodes:'E045', region:'VIC', date:'10 Apr 2024', tech:'Marwin Yambao', techEmail:'marwinyambao@goodwe.com.au', photos:[], notes:'', comments:[{author:'Jay Prajapati',role:'Approver',text:'Please provide MPPT screenshots from SEMS.',time:'10 Apr 2024 14:32',color:'#1557A0'}], rmaDetails:null },
+    { id:'WCL-2024-003', client:'Aus Solar NSW', contact:'Dave Hill', email:'dave@aussolar.net.au', phone:'0434 567 890', productCategory:'inverter', product:'GoodWe GW3000-NS (3kW)', serial:'GW2022093847', faultCat:'Arc Fault Detection', priority:'High', status:'rma', issue:'Arc fault triggering repeatedly with no wiring fault found.', errorCodes:'AFCI-01', region:'NSW', date:'09 Apr 2024', tech:'Marwin Yambao', techEmail:'marwinyambao@goodwe.com.au', photos:[], notes:'', comments:[{author:'Jay Prajapati',role:'Approver',text:'RMA issued. Pack securely and use provided courier label.',time:'09 Apr 2024 16:05',color:'#1557A0'}], rmaDetails:{rmaNumber:'RMA-2024-003-AU',serviceNumber:'SVC-GW-00301',courier:'StarTrack',trackingNumber:'7N98765432100',returnAddress:'GoodWe Australia, Unit 5/12 Loyalty Road, North Rocks NSW 2151',notes:'Handle with care.',issuedBy:'Jay Prajapati',issuedDate:'9 Apr 2024'} },
+    { id:'WCL-2024-004', client:'EcoSun WA', contact:'Rachel Ng', email:'rachel@ecosun.com.au', phone:'0445 678 901', productCategory:'inverter', product:'GoodWe GW5000D-NS (5kW)', serial:'GW2023102938', faultCat:'Display / Screen Fault', priority:'Low', status:'review', issue:'Display screen blank, unit operational per SEMS app.', errorCodes:'None', region:'WA', date:'08 Apr 2024', tech:'Marwin Yambao', techEmail:'marwinyambao@goodwe.com.au', photos:[], notes:'', comments:[{author:'Zyrene Cordero',role:'Approver',text:'Send close-up photo of display area and confirm firmware version from SEMS.',time:'08 Apr 2024 10:20',color:'#5340B0'}], rmaDetails:null },
+    { id:'WCL-2024-005', client:'Solar Pros SA', contact:'Ben Walsh', email:'ben@solarpros.com.au', phone:'0456 789 012', productCategory:'datalogger', product:'GoodWe WiFi Box (SEMS Portal)', serial:'GW2022118472', faultCat:'WiFi Connection Issue', priority:'Low', status:'rejected', issue:'WiFi disconnecting every 24–48h. Firmware update did not resolve.', errorCodes:'COMM-02', region:'SA', date:'05 Apr 2024', tech:'Marwin Yambao', techEmail:'marwinyambao@goodwe.com.au', photos:[], notes:'', comments:[{author:'Lester Jay Cardel',role:'Approver',text:'Router channel conflict — advise client to use channel 1 or 6. Claim rejected.',time:'05 Apr 2024 15:44',color:'#0F6E56'}], rmaDetails:null },
+    { id:'WCL-2024-006', client:'Bright Future QLD', contact:'Kim Torres', email:'kim@brightfuture.com.au', phone:'0467 890 123', productCategory:'inverter', product:'GoodWe GW3600-NS (3.6kW)', serial:'GW2024012847', faultCat:'Protection Mode Triggering', priority:'High', status:'pending', issue:'Protection mode triggered during peak hours when temp >35°C. Output drops to zero.', errorCodes:'E060, OT', region:'QLD', date:'11 Apr 2024', tech:'Marwin Yambao', techEmail:'marwinyambao@goodwe.com.au', photos:[], notes:'', comments:[], rmaDetails:null },
+  ],
+  users: {
+    admins:    [],
+    approvers: [],
+    techs:     []
+  },
+  notifications: [
+    { type:'approved', text:'WCL-2024-002 approved by Jay Prajapati', time:'2h ago', color:'#0F6E56' },
+    { type:'new',      text:'New claim WCL-2024-006 submitted by Marwin Yambao', time:'4h ago', color:'#D93B3B' },
+    { type:'rma',      text:'RMA-2024-003-AU issued for WCL-2024-003', time:'1d ago', color:'#5340B0' },
+  ]
+};
+
+function loadLocalData() {
+  try {
+    const s = localStorage.getItem(LS_KEY);
+    return s ? JSON.parse(s) : JSON.parse(JSON.stringify(FALLBACK_DATA));
+  } catch { return JSON.parse(JSON.stringify(FALLBACK_DATA)); }
+}
+function saveLocalData() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(DATA)); } catch {}
+}
+
+/* saveData → writes to DB if connected, always writes localStorage as cache */
+async function saveData() {
+  saveLocalData();
+}
+
+/* Full DB sync: load claims + users + notifications from Supabase */
+async function syncFromDB() {
+  if (!USE_DATABASE) return false;
+  showLoadingOverlay('Connecting to database…');
+  try {
+    const [claimRows, userRows, notifRows] = await Promise.all([
+      DB.get('claims', 'select=*'),
+      DB.get('users',  'select=*'),
+      DB.get('notifications', 'select=*&limit=30')
+    ]);
+    if (!claimRows || !userRows) throw new Error('No data returned');
+
+    DATA.claims = claimRows.map(dbRowToClaim);
+    const allUsers = userRows.map(dbRowToUser);
+    DATA.users.admins    = allUsers.filter(u => u.role === 'admin');
+    DATA.users.approvers = allUsers.filter(u => u.role === 'approver');
+    DATA.users.techs     = allUsers.filter(u => u.role === 'tech');
+    DATA.notifications   = (notifRows || []).map(r => ({ type:r.type, text:r.text, time:r.time, color:r.color }));
+    saveLocalData();
+    hideLoadingOverlay();
+    return true;
+  } catch(e) {
+    console.error('DB sync failed:', e);
+    hideLoadingOverlay();
+    return false;
+  }
+}
+
+/* Write a single claim to DB */
+async function dbSaveClaim(claim) {
+  if (!USE_DATABASE) { saveLocalData(); return; }
+  const row = claimToDbRow(claim);
+  // Try update first, insert if not found
+  const existing = await DB.get('claims', `id=eq.${claim.id}&select=id`);
+  if (existing && existing.length > 0) {
+    await DB.update('claims', claim.id, row);
+  } else {
+    await DB.insert('claims', row);
+  }
+  saveLocalData();
+}
+
+/* Write a notification to DB */
+async function dbSaveNotif(notif) {
+  if (!USE_DATABASE) return;
+  await DB.insert('notifications', { type: notif.type, text: notif.text, time: notif.time, color: notif.color });
+}
+
+/* Write a user to DB */
+async function dbSaveUser(user) {
+  if (!USE_DATABASE) { saveLocalData(); return; }
+  const row = {
+    id: user.id, full_name: user.fullName || user.name, email: user.email,
+    password: user.password, role: user.role, region: user.region,
+    color: user.color, init: user.init, active: user.active !== false
+  };
+  await DB.insert('users', row);
+  saveLocalData();
+}
+
+async function dbDeleteUser(id) {
+  if (!USE_DATABASE) { saveLocalData(); return; }
+  await DB.delete('users', id);
+  saveLocalData();
+}
+
+/* Loading overlay for async operations */
+function showLoadingOverlay(msg) {
+  let el = document.getElementById('db-overlay');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'db-overlay';
+    el.style.cssText = 'position:fixed;inset:0;background:rgba(28,20,16,0.55);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:14px;';
+    el.innerHTML = `<div style="width:36px;height:36px;border:3px solid rgba(255,255,255,0.2);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;"></div><div style="color:white;font-size:14px;font-family:var(--font-body);" id="db-overlay-msg">${msg}</div>`;
+    document.body.appendChild(el);
+  } else {
+    document.getElementById('db-overlay-msg').textContent = msg;
+  }
+}
+function hideLoadingOverlay() {
+  const el = document.getElementById('db-overlay');
+  if (el) el.remove();
+}
+
+// ── SYSTEM USERS (source of truth for auth) ──
+const SYSTEM_USERS = [
+  { id:'sys-admin-1', name:'Polly', fullName:'Polly (Manager)', email:'polly@goodwe.com.au', password:'polly1234', role:'admin', color:'#D93B3B', init:'PO' },
+  { id:'sys-apr-1',   name:'Jay Prajapati', fullName:'Jay Prajapati', email:'jayprajapati@goodwe.com.au', password:'jay1234', role:'approver', color:'#1557A0', init:'JP' },
+  { id:'sys-apr-2',   name:'Zyrene Cordero', fullName:'Zyrene Cordero', email:'zyrenecordero@goodwe.com.au', password:'zyrene1234', role:'approver', color:'#5340B0', init:'ZC' },
+  { id:'sys-apr-3',   name:'Lester Jay Cardel', fullName:'Lester Jay Cardel', email:'lesterjaycardel@goodwe.com.au', password:'lester1234', role:'approver', color:'#0F6E56', init:'LC' },
+  { id:'sys-tech-1',  name:'Marwin Yambao', fullName:'Marwin Yambao', email:'marwinyambao@goodwe.com.au', password:'marwin1234', role:'tech', color:'#0F6E56', init:'MY' },
+];
+
+let DATA = loadLocalData();
+let ROLE = 'admin';
+let CURRENT_USER = null;
+let CURRENT_PAGE = 'dashboard';
+let UPLOAD_FILES = {};
+
+function getRoleConfig(user) {
+  const techBadge = () => {
+    const mine = DATA.claims.filter(c => c.tech === user.fullName);
+    return mine.filter(c => c.status === 'pending').length || null;
+  };
+  const configs = {
+    admin: {
+      label:'Admin', name: user.fullName, init: user.init, color: user.color,
+      nav:[
+        { id:'dashboard', label:'Dashboard',       icon:dashIcon() },
+        { id:'claims',    label:'All Claims',       icon:claimsIcon(), badge:() => DATA.claims.filter(c=>c.status==='pending').length || null },
+        { id:'users',     label:'User Management',  icon:usersIcon() },
+        { id:'analytics', label:'Analytics',        icon:chartIcon() },
+        { id:'notifs',    label:'Notifications',    icon:bellIcon() },
+      ]
+    },
+    approver: {
+      label:'Approver', name: user.fullName, init: user.init, color: user.color,
+      nav:[
+        { id:'dashboard', label:'Dashboard',      icon:dashIcon() },
+        { id:'claims',    label:'Pending Claims',  icon:claimsIcon(), badge:() => DATA.claims.filter(c=>c.status==='pending'||c.status==='review').length || null },
+        { id:'rma',       label:'RMA Issued',      icon:rmaIcon() },
+        { id:'notifs',    label:'Notifications',   icon:bellIcon() },
+      ]
+    },
+    tech: {
+      label:'Tech Support', name: user.fullName, init: user.init, color: user.color,
+      nav:[
+        { id:'dashboard', label:'Dashboard',  icon:dashIcon() },
+        { id:'new-claim', label:'New Claim',  icon:plusIcon() },
+        { id:'my-claims', label:'My Claims',  icon:claimsIcon(), badge: techBadge },
+        { id:'notifs',    label:'Notifications', icon:bellIcon() },
+      ]
+    }
+  };
+  return configs[user.role];
+}
+
+// Alias so existing code using ROLE_CONFIGS[ROLE] still works
+const ROLE_CONFIGS = new Proxy({}, {
+  get(_, key) {
+    if (CURRENT_USER) return getRoleConfig(CURRENT_USER);
+    // fallback during boot
+    const fallback = { admin:{label:'Admin',name:'Admin',init:'AD',color:'#D93B3B',nav:[]}, approver:{label:'Approver',name:'Approver',init:'AP',color:'#1557A0',nav:[]}, tech:{label:'Tech Support',name:'Tech',init:'TS',color:'#0F6E56',nav:[]} };
+    return fallback[key] || fallback.admin;
+  }
+});
+
+
+/* ══ ICONS ══ */
+function dashIcon() { return `<svg class="sb-item-icon" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/></svg>`; }
+function claimsIcon() { return `<svg class="sb-item-icon" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h7M3 12h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`; }
+function usersIcon() { return `<svg class="sb-item-icon" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M1 14c0-2.761 2.239-5 5-5s5 2.239 5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M11 7c1.657 0 3 1.343 3 3 0 .5-.5 1-1 1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`; }
+function chartIcon() { return `<svg class="sb-item-icon" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 8L9 11L13 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 14h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`; }
+function bellIcon() { return `<svg class="sb-item-icon" viewBox="0 0 16 16" fill="none"><path d="M8 2C5.79 2 4 3.79 4 6v3l-1.5 2h11L12 9V6c0-2.21-1.79-4-4-4zM6.5 13a1.5 1.5 0 003 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`; }
+function rmaIcon() { return `<svg class="sb-item-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.3"/><path d="M8 8v2M7 9h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`; }
+function plusIcon() { return `<svg class="sb-item-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v6M5 8h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`; }
+
+/* ══ LOGIN ══ */
+function pickRole(r) {
+  ROLE = r;
+  ['admin','approver','tech'].forEach(x => {
+    const el = document.getElementById('ropt-'+x);
+    if (el) el.classList.toggle('sel', x===r);
+  });
+}
+
+async function doLogin() {
+  const email = document.getElementById('li-email').value.trim().toLowerCase();
+  const pw    = document.getElementById('li-pw').value;
+  const err   = document.getElementById('login-err');
+  if (!email) { err.textContent = 'Please enter your email address.'; return; }
+  if (!pw)    { err.textContent = 'Please enter your password.'; return; }
+  err.textContent = '';
+
+  const btn = document.getElementById('login-btn');
+  btn.innerHTML = '<span class="spinner"></span> Signing in…';
+  btn.disabled  = true;
+
+  // Sync users from DB so dynamically added accounts can log in
+  if (USE_DATABASE) await syncFromDB();
+
+  // Check SYSTEM_USERS first (hardcoded, always valid)
+  let foundUser = SYSTEM_USERS.find(u => u.email.toLowerCase() === email && u.password === pw);
+
+  // Then check DB/dynamic users
+  if (!foundUser) {
+    const allDynamic = [
+      ...(DATA.users.admins    || []),
+      ...(DATA.users.approvers || []),
+      ...(DATA.users.techs     || [])
+    ];
+    foundUser = allDynamic.find(u => u.email && u.email.toLowerCase() === email && u.password === pw);
+  }
+
+  btn.innerHTML = 'Sign In';
+  btn.disabled  = false;
+
+  if (!foundUser) {
+    err.textContent = 'Incorrect email or password. Please try again.';
+    return;
+  }
+
+  CURRENT_USER = foundUser;
+  ROLE = foundUser.role;
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('dash-page').style.display  = 'block';
+  initDash();
+}
+
+function logout() {
+  CURRENT_USER = null;
+  document.getElementById('dash-page').style.display  = 'none';
+  document.getElementById('login-page').style.display = 'flex';
+  document.getElementById('li-email').value = '';
+  document.getElementById('li-pw').value    = '';
+  document.getElementById('login-err').textContent = '';
+}
+
+
+/* ══ INIT ══ */
+async function initDash() {
+  const rc = getRoleConfig(CURRENT_USER);
+  const nav = document.getElementById('sb-nav');
+  nav.innerHTML = `<div class="sb-section-label">Menu</div>` +
+    rc.nav.map(n => {
+      const b = n.badge ? n.badge() : null;
+      return `<div class="sb-item" id="sbitem-${n.id}" onclick="goTo('${n.id}')">
+        ${n.icon}<span>${n.label}</span>
+        ${b ? `<span class="sb-badge">${b}</span>` : ''}
+      </div>`;
+    }).join('');
+  document.getElementById('sb-av').textContent = CURRENT_USER.init;
+  document.getElementById('sb-av').style.background = CURRENT_USER.color;
+  document.getElementById('sb-uname').textContent = CURRENT_USER.fullName;
+  document.getElementById('sb-urole').textContent = rc.label;
+
+  // Show DB status badge in sidebar
+  const sbHeader = document.querySelector('.sb-header');
+  if (sbHeader && USE_DATABASE) {
+    const existing = document.getElementById('db-status');
+    if (!existing) {
+      sbHeader.insertAdjacentHTML('beforeend',
+        `<div id="db-status" style="margin-top:8px;display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.35);">
+          <span style="width:6px;height:6px;border-radius:50%;background:#0F6E56;display:inline-block;"></span>Live Database
+        </div>`);
+    }
+  }
+
+  // Sync fresh data from DB then render
+  if (USE_DATABASE) {
+    await syncFromDB();
+    refreshNav();
+  }
+  goTo('dashboard');
+}
+
+function goTo(page) {
+  CURRENT_PAGE = page;
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  const el = document.getElementById('sbitem-'+page);
+  if (el) el.classList.add('active');
+  renderPage(page);
+}
+
+function refreshNav() {
+  if (!CURRENT_USER) return;
+  const rc = getRoleConfig(CURRENT_USER);
+  rc.nav.forEach(n => {
+    const b = n.badge ? n.badge() : null;
+    const el = document.getElementById('sbitem-'+n.id);
+    if (!el) return;
+    const existing = el.querySelector('.sb-badge');
+    if (existing) existing.remove();
+    if (b) el.insertAdjacentHTML('beforeend', `<span class="sb-badge">${b}</span>`);
+  });
+}
+
+/* ══ ROUTE ══ */
+function renderPage(page) {
+  const ca = document.getElementById('content-area');
+  const ta = document.getElementById('tb-actions');
+  ta.innerHTML = '';
+  document.getElementById('tb-sub').textContent = '';
+
+  if (page === 'dashboard') {
+    document.getElementById('tb-title').textContent = 'Dashboard';
+    document.getElementById('tb-sub').textContent = `Welcome back, ${CURRENT_USER ? CURRENT_USER.fullName : ''}`;
+    renderDashboard(ca);
+  } else if (page === 'claims' || page === 'my-claims') {
+    const isMine = page === 'my-claims';
+    document.getElementById('tb-title').textContent = ROLE==='approver' ? 'Pending Claims' : isMine ? 'My Claims' : 'All Claims';
+    document.getElementById('tb-sub').textContent = 'Warranty claim management';
+    if (ROLE === 'admin') {
+      ta.innerHTML = `<button class="btn btn-ghost btn-sm" onclick="exportCSV()">Export CSV</button>`;
+    }
+    renderClaims(ca, isMine);
+  } else if (page === 'users') {
+    document.getElementById('tb-title').textContent = 'User Management';
+    ta.innerHTML = `<button class="btn btn-red btn-sm" onclick="openAddUser()">+ Add User</button>`;
+    renderUsers(ca);
+  } else if (page === 'new-claim') {
+    document.getElementById('tb-title').textContent = 'New Warranty Claim';
+    renderNewClaim(ca);
+  } else if (page === 'rma') {
+    document.getElementById('tb-title').textContent = 'RMA Issued';
+    renderRMA(ca);
+  } else if (page === 'analytics') {
+    document.getElementById('tb-title').textContent = 'Analytics';
+    renderAnalytics(ca);
+  } else if (page === 'notifs') {
+    document.getElementById('tb-title').textContent = 'Notifications';
+    renderNotifs(ca);
+  }
+}
+
+/* ══ STATUS HELPERS ══ */
+const STATUS_MAP = {
+  pending:  { cls:'b-pending',  label:'Pending' },
+  approved: { cls:'b-approved', label:'Approved' },
+  review:   { cls:'b-review',   label:'In Review' },
+  rejected: { cls:'b-rejected', label:'Rejected' },
+  rma:      { cls:'b-rma',      label:'RMA Issued' },
+  new:      { cls:'b-new',      label:'New' },
+};
+function badge(s) {
+  const m = STATUS_MAP[s] || { cls:'b-new', label:s };
+  return `<span class="badge ${m.cls}">${m.label}</span>`;
+}
+function priClass(p) {
+  return p==='High'?'pri-high':p==='Medium'?'pri-medium':'pri-low';
+}
+
+/* ══════════════════════════════════
+   DASHBOARD
+══════════════════════════════════ */
+function renderDashboard(el) {
+  const claims = DATA.claims;
+  const pending  = claims.filter(c=>c.status==='pending').length;
+  const approved = claims.filter(c=>c.status==='approved').length;
+  const rma      = claims.filter(c=>c.status==='rma').length;
+  const total    = claims.length;
+  const myC      = claims.filter(c=>c.tech===(CURRENT_USER ? CURRENT_USER.fullName : ''));
+
+  let stats = '';
+  if (ROLE === 'admin') {
+    stats = `
+      <div class="stats-grid">
+        <div class="stat-card" style="--accent:var(--red-400)"><div class="sc-label">Total Claims</div><div class="sc-val">${total}</div><div class="sc-delta up">↑ 3 this week</div></div>
+        <div class="stat-card" style="--accent:var(--warn)"><div class="sc-label">Pending Review</div><div class="sc-val">${pending}</div><div class="sc-delta warn-text">Needs action</div></div>
+        <div class="stat-card" style="--accent:var(--success)"><div class="sc-label">Approved</div><div class="sc-val">${approved}</div><div class="sc-delta up">↑ 2 this week</div></div>
+        <div class="stat-card" style="--accent:var(--purple)"><div class="sc-label">RMA Issued</div><div class="sc-val">${rma}</div><div class="sc-delta up">Active returns</div></div>
+      </div>`;
+  } else if (ROLE === 'approver') {
+    stats = `
+      <div class="stats-grid">
+        <div class="stat-card" style="--accent:var(--warn)"><div class="sc-label">Awaiting Approval</div><div class="sc-val">${pending}</div><div class="sc-delta warn-text">Action needed</div></div>
+        <div class="stat-card" style="--accent:var(--success)"><div class="sc-label">Approved</div><div class="sc-val">${approved}</div><div class="sc-delta up">This month</div></div>
+        <div class="stat-card" style="--accent:var(--purple)"><div class="sc-label">RMA Issued</div><div class="sc-val">${rma}</div><div class="sc-delta up">Active</div></div>
+        <div class="stat-card" style="--accent:var(--info)"><div class="sc-label">Avg Response</div><div class="sc-val">1.4d</div><div class="sc-delta up">↓ Improving</div></div>
+      </div>`;
+  } else {
+    stats = `
+      <div class="stats-grid">
+        <div class="stat-card" style="--accent:var(--red-400)"><div class="sc-label">My Claims</div><div class="sc-val">${myC.length}</div><div class="sc-delta">Total submitted</div></div>
+        <div class="stat-card" style="--accent:var(--warn)"><div class="sc-label">In Progress</div><div class="sc-val">${myC.filter(c=>c.status==='pending').length}</div><div class="sc-delta warn-text">Awaiting review</div></div>
+        <div class="stat-card" style="--accent:var(--success)"><div class="sc-label">Approved</div><div class="sc-val">${myC.filter(c=>c.status==='approved').length}</div><div class="sc-delta up">This month</div></div>
+        <div class="stat-card" style="--accent:var(--purple)"><div class="sc-label">RMA</div><div class="sc-val">${myC.filter(c=>c.status==='rma').length}</div><div class="sc-delta up">Closed</div></div>
+      </div>`;
+  }
+
+  const recent = claims.slice(0, 5);
+  const notifHtml = DATA.notifications.slice(0,4).map(n=>`
+    <div class="notif-item">
+      <div class="notif-dot" style="background:${n.color}"></div>
+      <div><div class="notif-text">${n.text}</div><div class="notif-time">${n.time}</div></div>
+    </div>`).join('');
+
+  el.innerHTML = stats + `
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:1.25rem;">
+      <div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">Recent Claims</span><span style="font-size:11px;color:var(--ink-400);margin-left:auto;">Last 30 days</span></div>
+          <div class="card-body-0 tbl-wrap">
+            <table>
+              <thead><tr><th>Claim ID</th><th>Client</th><th>Product</th><th>Status</th><th>Date</th><th></th></tr></thead>
+              <tbody>${recent.map(c=>`<tr>
+                <td><span class="mono cl-id">${c.id}</span></td>
+                <td>${c.client}</td>
+                <td style="font-size:12px;color:var(--ink-400);">${c.product.split('(')[0].trim()}</td>
+                <td>${badge(c.status)}</td>
+                <td style="font-size:12px;color:var(--ink-400);">${c.date}</td>
+                <td><button class="btn btn-ghost btn-sm" onclick="viewClaim('${c.id}')">View</button></td>
+              </tr>`).join('')}</tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">Recent Activity</span></div>
+          <div class="card-body-0 notif-list">${notifHtml}</div>
+        </div>
+        <div class="card" style="margin-top:0">
+          <div class="card-head"><span class="card-title">Claims by Region</span></div>
+          <div class="card-body">${regionChart()}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function regionChart() {
+  const regions = ['QLD','NSW','VIC','WA','SA'];
+  const counts = regions.map(r => DATA.claims.filter(c=>c.region===r).length);
+  const max = Math.max(...counts) || 1;
+  return `<div class="chart-bar-wrap">` +
+    regions.map((r,i) => {
+      const pct = Math.round((counts[i]/max)*100);
+      return `<div class="chart-bar-row">
+        <div class="cbr-label">${r}</div>
+        <div class="cbr-track"><div class="cbr-fill" style="width:${pct}%"><span>${counts[i]}</span></div></div>
+      </div>`;
+    }).join('') + `</div>`;
+}
+
+/* ══════════════════════════════════
+   CLAIMS LIST
+══════════════════════════════════ */
+function renderClaims(el, mineOnly) {
+  let list = [...DATA.claims];
+  if (ROLE === 'approver') list = list.filter(c=>c.status==='pending'||c.status==='review');
+  if (mineOnly || ROLE === 'tech') list = list.filter(c=>c.tech===(CURRENT_USER ? CURRENT_USER.fullName : ''));
+
+  el.innerHTML = `
+    <div class="filter-bar">
+      <input class="filter-input wide" placeholder="Search claims, clients, serials…" oninput="filterTable(this.value)" id="search-input" />
+      <select class="filter-input" onchange="filterStatus(this.value)" id="status-filter">
+        <option value="">All statuses</option>
+        <option value="pending">Pending</option>
+        <option value="review">In Review</option>
+        <option value="approved">Approved</option>
+        <option value="rma">RMA Issued</option>
+        <option value="rejected">Rejected</option>
+      </select>
+      <select class="filter-input" onchange="filterRegion(this.value)" id="region-filter">
+        <option value="">All regions</option>
+        <option>QLD</option><option>NSW</option><option>VIC</option><option>WA</option><option>SA</option>
+      </select>
+    </div>
+    <div class="card">
+      <div class="card-body-0 tbl-wrap">
+        <table id="claims-table">
+          <thead><tr>
+            <th>Claim ID</th><th>Client</th><th>Product / Serial</th><th>Fault Category</th>
+            <th>Priority</th><th>Status</th><th>Date</th><th>Actions</th>
+          </tr></thead>
+          <tbody>${list.map(claimRow).join('')}</tbody>
+        </table>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--ink-400);text-align:right;">Showing ${list.length} claim${list.length!==1?'s':''}</div>`;
+}
+
+function claimRow(c) {
+  const hasComments = c.comments && c.comments.length > 0;
+  let btns = `<button class="btn btn-ghost btn-sm" onclick="viewClaim('${c.id}')">View</button>`;
+  if ((ROLE==='admin'||ROLE==='approver') && (c.status==='pending'||c.status==='review')) {
+    btns += ` <button class="btn btn-approve btn-sm" onclick="approveClaim('${c.id}')">Approve</button>`;
+    btns += ` <button class="btn btn-reject btn-sm" onclick="rejectClaim('${c.id}')">Reject</button>`;
+  }
+  if ((ROLE==='approver'||ROLE==='admin') && c.status==='approved') {
+    btns += ` <button class="btn btn-rma btn-sm" onclick="issueRMA('${c.id}')">Issue RMA</button>`;
+  }
+  const reviewAlert = (ROLE==='tech' && c.status==='review' && hasComments)
+    ? `<div style="font-size:10px;background:var(--warn-bg);color:var(--warn);padding:2px 7px;border-radius:99px;display:inline-block;margin-top:3px;">⚠ Action needed</div>` : '';
+  const commentCount = hasComments ? `<div style="font-size:10px;color:var(--info);margin-top:3px;">💬 ${c.comments.length} comment${c.comments.length>1?'s':''}</div>` : '';
+  const pri = `<span class="${priClass(c.priority)}">${c.priority}</span>`;
+  return `<tr id="row-${c.id}">
+    <td><span class="mono cl-id">${c.id}</span></td>
+    <td><div style="font-size:13px;font-weight:500;">${c.client}</div><div style="font-size:11px;color:var(--ink-400);">${c.region}</div></td>
+    <td><div style="font-size:12px;">${c.product ? c.product.split('(')[0].trim() : '—'}</div><div class="mono" style="color:var(--ink-400)">${c.serial}</div></td>
+    <td style="font-size:12px;color:var(--ink-600);max-width:140px;">${c.faultCat}</td>
+    <td>${pri}</td>
+    <td>${badge(c.status)}${reviewAlert}${commentCount}</td>
+    <td style="font-size:12px;color:var(--ink-400);white-space:nowrap;">${c.date}</td>
+    <td style="white-space:nowrap;">${btns}</td>
+  </tr>`;
+}
+
+function filterTable(q) {
+  const q2 = q.toLowerCase();
+  document.querySelectorAll('#claims-table tbody tr').forEach(r => {
+    r.style.display = r.textContent.toLowerCase().includes(q2) ? '' : 'none';
+  });
+}
+function filterStatus(s) {
+  const q = document.getElementById('search-input')?.value.toLowerCase() || '';
+  document.querySelectorAll('#claims-table tbody tr').forEach(r => {
+    const matchQ = !q || r.textContent.toLowerCase().includes(q);
+    const matchS = !s || r.innerHTML.includes(STATUS_MAP[s]?.label || s);
+    r.style.display = (matchQ && matchS) ? '' : 'none';
+  });
+}
+function filterRegion(rg) {
+  document.querySelectorAll('#claims-table tbody tr').forEach(r => {
+    r.style.display = !rg || r.textContent.includes(rg) ? '' : 'none';
+  });
+}
+
+/* ══════════════════════════════════
+   CLAIM DETAIL MODAL
+══════════════════════════════════ */
+function viewClaim(id) {
+  const c = DATA.claims.find(x=>x.id===id);
+  if (!c) return;
+
+  const photoHtml = c.photos && c.photos.length
+    ? c.photos.map(p => `<div class="photo-modal-cell"><img src="${p}" alt="photo" /></div>`).join('')
+    : ['📷','🖼️','📸'].slice(0,3).map(e=>`<div class="photo-modal-cell"><span class="ph-placeholder">${e}</span></div>`).join('');
+
+  const catLabel = { inverter:'Inverter', datalogger:'DataLogger', battery:'Battery', smartmeter:'Smart Meter', other:'Others' };
+
+  let actionBtns = '';
+  if ((ROLE==='admin'||ROLE==='approver') && (c.status==='pending'||c.status==='review')) {
+    actionBtns = `<div style="display:flex;gap:8px;margin-top:1rem;">
+      <button class="btn btn-approve" style="flex:1;" onclick="approveClaim('${c.id}');closeModal()">Approve Claim</button>
+      <button class="btn btn-reject" style="flex:1;" onclick="rejectClaim('${c.id}');closeModal()">Reject</button>
+    </div>`;
+  }
+  if ((ROLE==='approver'||ROLE==='admin') && c.status==='approved') {
+    actionBtns = `<div style="margin-top:1rem;">
+      <button class="btn btn-rma" style="width:100%;" onclick="closeModal();issueRMA('${c.id}')">Issue RMA for this Claim</button>
+    </div>`;
+  }
+
+  // RMA details block
+  let rmaBlock = '';
+  if (c.rmaDetails) {
+    const r = c.rmaDetails;
+    rmaBlock = `<div style="margin-top:1rem;background:var(--purple-bg);border-radius:var(--radius);padding:1rem;">
+      <div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">RMA Details</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 1rem;font-size:12px;">
+        <div><span style="color:var(--ink-400);">RMA Number</span><div style="font-weight:600;font-family:monospace;">${r.rmaNumber}</div></div>
+        <div><span style="color:var(--ink-400);">Service Number</span><div style="font-weight:600;font-family:monospace;">${r.serviceNumber}</div></div>
+        <div><span style="color:var(--ink-400);">Courier</span><div style="font-weight:600;">${r.courier}</div></div>
+        <div><span style="color:var(--ink-400);">Tracking Number</span><div style="font-weight:600;font-family:monospace;">${r.trackingNumber}</div></div>
+        <div style="grid-column:1/-1;"><span style="color:var(--ink-400);">Return Address</span><div style="font-weight:500;">${r.returnAddress}</div></div>
+        ${r.notes ? `<div style="grid-column:1/-1;"><span style="color:var(--ink-400);">Notes</span><div style="font-weight:500;">${r.notes}</div></div>` : ''}
+        <div><span style="color:var(--ink-400);">Issued By</span><div style="font-weight:500;">${r.issuedBy}</div></div>
+        <div><span style="color:var(--ink-400);">Issued Date</span><div style="font-weight:500;">${r.issuedDate}</div></div>
+      </div>
+    </div>`;
+  }
+
+  // Comments thread
+  const comments = c.comments || [];
+  const commentHtml = comments.length ? comments.map(cm => `
+    <div style="display:flex;gap:10px;margin-bottom:12px;">
+      <div style="width:28px;height:28px;border-radius:50%;background:${cm.color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0;">${cm.author.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+      <div style="flex:1;background:var(--ink-50);border-radius:var(--radius);padding:10px 12px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+          <span style="font-size:12px;font-weight:600;">${cm.author}</span>
+          <span style="font-size:10px;color:var(--ink-400);">${cm.time}</span>
+        </div>
+        <div style="font-size:13px;color:var(--ink-800,var(--ink-900));line-height:1.5;">${cm.text}</div>
+        <div style="margin-top:4px;"><span class="badge ${cm.role==='Approver'?'b-rma':cm.role==='Admin'?'b-rejected':'b-review'}" style="font-size:10px;padding:2px 7px;">${cm.role}</span></div>
+      </div>
+    </div>`).join('')
+    : `<div style="font-size:12px;color:var(--ink-400);text-align:center;padding:1rem;">No comments yet.</div>`;
+
+  // Show add comment for approver/admin, and for tech if there are pending comments
+  let commentInput = '';
+  if (ROLE === 'approver' || ROLE === 'admin') {
+    commentInput = `
+      <div style="margin-top:10px;">
+        <textarea id="comment-input" style="width:100%;padding:9px 12px;font-size:13px;font-family:var(--font-body);border:1px solid var(--ink-200);border-radius:var(--radius);background:var(--ink-50);outline:none;resize:vertical;min-height:72px;" placeholder="Add a comment — request additional documents, photos, or actions from Tech Support…"></textarea>
+        <button class="btn btn-ghost btn-sm" style="margin-top:6px;" onclick="addComment('${c.id}')">Post Comment & Set In Review</button>
+      </div>`;
+  } else if (ROLE === 'tech' && comments.length > 0) {
+    commentInput = `
+      <div style="margin-top:10px;">
+        <textarea id="comment-input" style="width:100%;padding:9px 12px;font-size:13px;font-family:var(--font-body);border:1px solid var(--ink-200);border-radius:var(--radius);background:var(--ink-50);outline:none;resize:vertical;min-height:72px;" placeholder="Reply with follow-up information, documents or photos…"></textarea>
+        <button class="btn btn-ghost btn-sm" style="margin-top:6px;" onclick="addComment('${c.id}')">Send Follow-up</button>
+      </div>`;
+  }
+
+  document.getElementById('modal-inner').innerHTML = `
+    <div class="modal-title">${c.id} — Claim Detail</div>
+    <div style="margin-bottom:1rem;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+      ${badge(c.status)}
+      <span class="${priClass(c.priority)}" style="font-size:12px;">● ${c.priority} Priority</span>
+      ${c.productCategory ? `<span class="badge b-new">${catLabel[c.productCategory]||c.productCategory}</span>` : ''}
+    </div>
+    <div class="detail-grid">
+      <div class="drow"><span class="dkey">Client</span><span class="dval">${c.client}</span></div>
+      <div class="drow"><span class="dkey">Contact</span><span class="dval">${c.contact}</span></div>
+      <div class="drow"><span class="dkey">Email</span><span class="dval" style="font-size:12px;">${c.email}</span></div>
+      <div class="drow"><span class="dkey">Phone</span><span class="dval">${c.phone}</span></div>
+      <div class="drow"><span class="dkey">Product</span><span class="dval" style="font-size:12px;">${c.product}</span></div>
+      <div class="drow"><span class="dkey">Serial</span><span class="dval mono" style="font-size:12px;">${c.serial}</span></div>
+      <div class="drow"><span class="dkey">Region</span><span class="dval">${c.region}</span></div>
+      <div class="drow"><span class="dkey">Date</span><span class="dval">${c.date}</span></div>
+      <div class="drow"><span class="dkey">Fault Type</span><span class="dval" style="font-size:12px;">${c.faultCat}</span></div>
+      <div class="drow"><span class="dkey">Error Codes</span><span class="dval mono">${c.errorCodes||'None'}</span></div>
+      <div class="drow"><span class="dkey">Tech Support</span><span class="dval">${c.tech}</span></div>
+      <div class="drow"><span class="dkey">Tech Email</span><span class="dval" style="font-size:12px;">${c.techEmail}</span></div>
+    </div>
+    <div style="margin-top:1rem;padding:12px;background:var(--ink-50);border-radius:var(--radius);font-size:13px;line-height:1.6;">${c.issue}</div>
+    ${c.notes ? `<div style="margin-top:8px;padding:10px;background:var(--warn-bg);border-radius:var(--radius);font-size:12px;color:var(--warn);">📋 ${c.notes}</div>` : ''}
+    <div style="margin-top:1.25rem;">
+      <div style="font-size:11px;font-weight:700;color:var(--ink-400);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Photo Evidence (${c.photos && c.photos.length ? c.photos.length : 'Sample'})</div>
+      <div class="photo-modal-grid">${photoHtml}</div>
+    </div>
+    ${rmaBlock}
+    <div style="margin-top:1.25rem;">
+      <div style="font-size:11px;font-weight:700;color:var(--ink-400);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Comments & Follow-up (${comments.length})</div>
+      ${commentHtml}
+      ${commentInput}
+    </div>
+    ${actionBtns}`;
+  openModal();
+}
+
+/* ══════════════════════════════════
+   CLAIM ACTIONS
+══════════════════════════════════ */
+async function approveClaim(id) {
+  const c = DATA.claims.find(x=>x.id===id);
+  if (!c) return;
+  c.status = 'approved';
+  const notif = { type:'approved', text:`${id} approved by ${currentUserName()}`, time:'just now', color:'#0F6E56' };
+  addNotif(notif.type, notif.text, notif.time, notif.color);
+  await dbSaveClaim(c);
+  await dbSaveNotif(notif);
+  refreshNav(); renderPage(CURRENT_PAGE);
+  toast(`✓ Claim ${id} approved`);
+}
+async function rejectClaim(id) {
+  const c = DATA.claims.find(x=>x.id===id);
+  if (!c) return;
+  c.status = 'rejected';
+  const notif = { type:'rejected', text:`${id} rejected by ${currentUserName()}`, time:'just now', color:'#B52828' };
+  addNotif(notif.type, notif.text, notif.time, notif.color);
+  await dbSaveClaim(c);
+  await dbSaveNotif(notif);
+  refreshNav(); renderPage(CURRENT_PAGE);
+  toast(`✗ Claim ${id} rejected`);
+}
+function issueRMA(id) {
+  const c = DATA.claims.find(x=>x.id===id);
+  if (!c) return;
+  document.getElementById('modal-inner').innerHTML = `
+    <div class="modal-title">Issue RMA — ${id}</div>
+    <div style="margin-bottom:1rem;font-size:13px;color:var(--ink-600);">Fill in the RMA and courier details to complete the return process.</div>
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+      <div class="fg"><label>RMA Number *</label><input id="rma-num" placeholder="e.g. RMA-2024-001-AU" /></div>
+      <div class="fg"><label>Service Number *</label><input id="rma-svc" placeholder="e.g. SVC-GW-00321" /></div>
+      <div class="fg"><label>Courier / Carrier *</label>
+        <select id="rma-courier">
+          <option value="">Select courier…</option>
+          <option>StarTrack</option>
+          <option>Australia Post</option>
+          <option>TNT / FedEx Australia</option>
+          <option>DHL Express</option>
+          <option>Toll IPEC</option>
+          <option>Aramex Australia</option>
+          <option>Hunter Express</option>
+          <option>Allied Express</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fg"><label>Tracking Number *</label><input id="rma-track" placeholder="e.g. 7N12345678901" /></div>
+      <div class="fg"><label>Return Address</label><input id="rma-addr" value="GoodWe Australia, Unit 5/12 Loyalty Road, North Rocks NSW 2151" /></div>
+      <div class="fg"><label>Notes / Instructions</label><textarea id="rma-notes" rows="2" placeholder="Any special handling instructions…"></textarea></div>
+      <button class="btn btn-rma" onclick="saveRMA('${id}')">Confirm & Issue RMA</button>
+    </div>`;
+  openModal();
+}
+
+async function saveRMA(id) {
+  const rmaNum  = document.getElementById('rma-num')?.value?.trim();
+  const svcNum  = document.getElementById('rma-svc')?.value?.trim();
+  const courier = document.getElementById('rma-courier')?.value;
+  const track   = document.getElementById('rma-track')?.value?.trim();
+  if (!rmaNum || !svcNum || !courier || !track) { toast('Please fill in all required RMA fields.'); return; }
+  const c = DATA.claims.find(x=>x.id===id);
+  if (!c) return;
+  c.status = 'rma';
+  c.rmaDetails = {
+    rmaNumber:     rmaNum,
+    serviceNumber: svcNum,
+    courier:       courier,
+    trackingNumber:track,
+    returnAddress: document.getElementById('rma-addr')?.value?.trim(),
+    notes:         document.getElementById('rma-notes')?.value?.trim(),
+    issuedBy:      currentUserName(),
+    issuedDate:    new Date().toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})
+  };
+  const notif = { type:'rma', text:`RMA ${rmaNum} issued for ${id} via ${courier}`, time:'just now', color:'#5340B0' };
+  addNotif(notif.type, notif.text, notif.time, notif.color);
+  await dbSaveClaim(c);
+  await dbSaveNotif(notif);
+  refreshNav(); closeModal();
+  renderPage(CURRENT_PAGE);
+  toast(`RMA ${rmaNum} issued via ${courier}`);
+}
+
+async function addComment(id) {
+  const text = document.getElementById('comment-input')?.value?.trim();
+  if (!text) { toast('Please enter a comment.'); return; }
+  const c = DATA.claims.find(x=>x.id===id);
+  if (!c) return;
+  if (!c.comments) c.comments = [];
+  c.comments.push({
+    author: CURRENT_USER ? CURRENT_USER.fullName : ROLE_CONFIGS[ROLE].name,
+    role:   ROLE==='admin'?'Admin':ROLE==='approver'?'Approver':'Tech Support',
+    text,
+    time:   new Date().toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) + ' ' + new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}),
+    color:  CURRENT_USER ? CURRENT_USER.color : '#D93B3B'
+  });
+  if (ROLE === 'approver' || ROLE === 'admin') c.status = 'review';
+  const notif = { type:'comment', text:`Comment added to ${id} by ${currentUserName()}`, time:'just now', color: CURRENT_USER ? CURRENT_USER.color : '#D93B3B' };
+  addNotif(notif.type, notif.text, notif.time, notif.color);
+  await dbSaveClaim(c);
+  await dbSaveNotif(notif);
+  refreshNav();
+  toast('Comment added');
+  viewClaim(id);
+}
+function addNotif(type, text, time, color) {
+  DATA.notifications.unshift({ type, text, time, color });
+  if (DATA.notifications.length > 30) DATA.notifications.pop();
+}
+
+function currentUserName() {
+  return CURRENT_USER ? CURRENT_USER.fullName : 'Staff';
+}
+
+/* ══════════════════════════════════
+   NEW CLAIM FORM
+══════════════════════════════════ */
+function renderNewClaim(el) {
+  UPLOAD_FILES = {};
+  el.innerHTML = `
+    <div class="form-panel">
+      <div class="form-section-title">Client Information</div>
+      <div class="form-grid">
+        <div class="fg"><label>Company / Client Name *</label><input id="f-client" placeholder="e.g. SunSmart Energy QLD" /></div>
+        <div class="fg"><label>Contact Person *</label><input id="f-contact" placeholder="Full name" /></div>
+        <div class="fg"><label>Email Address *</label><input id="f-email" type="email" placeholder="client@example.com.au" /></div>
+        <div class="fg"><label>Phone Number</label><input id="f-phone" placeholder="+61 4XX XXX XXX" /></div>
+      </div>
+      <div class="form-section-title">Product Details</div>
+      <div class="form-grid">
+        <div class="fg"><label>Product Category *</label>
+          <select id="f-prodcat" onchange="updateProductModels()">
+            <option value="">Select category…</option>
+            <option value="inverter">Inverter</option>
+            <option value="datalogger">DataLogger</option>
+            <option value="battery">Battery</option>
+            <option value="smartmeter">Smart Meter</option>
+            <option value="other">Others</option>
+          </select>
+        </div>
+        <div class="fg" id="f-product-wrap" style="display:none;">
+          <label id="f-product-label">Product Model *</label>
+          <select id="f-product"><option value="">Select model…</option></select>
+        </div>
+        <div class="fg" id="f-product-other-wrap" style="display:none;">
+          <label>Product Description *</label>
+          <input id="f-product-other" placeholder="Describe the product / model name" />
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="fg"><label>Serial Number *</label><input id="f-serial" placeholder="e.g. GW2023XXXXXX" /></div>
+        <div class="fg"><label>Installation Date *</label><input id="f-installdate" type="date" /></div>
+        <div class="fg"><label>Region / State *</label>
+          <select id="f-region">
+            <option value="">Select region…</option>
+            <option value="QLD">Queensland (QLD)</option>
+            <option value="NSW">New South Wales (NSW)</option>
+            <option value="VIC">Victoria (VIC)</option>
+            <option value="SA">South Australia (SA)</option>
+            <option value="WA">Western Australia (WA)</option>
+            <option value="TAS">Tasmania (TAS)</option>
+            <option value="NT">Northern Territory (NT)</option>
+            <option value="ACT">ACT</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-section-title">Fault Report</div>
+      <div class="form-grid">
+        <div class="fg"><label>Fault Category *</label>
+          <select id="f-fault">
+            <option value="">Select fault type…</option>
+            <option>No Output / Not Producing</option>
+            <option>MPPT Fault</option>
+            <option>Arc Fault Detection</option>
+            <option>Communication Issue (WiFi/SEMS)</option>
+            <option>Display / Screen Fault</option>
+            <option>Protection Mode Triggering</option>
+            <option>Overheating / Thermal Fault</option>
+            <option>Isolation Fault</option>
+            <option>Physical Damage</option>
+            <option>Battery Integration Issue</option>
+            <option>Grid Disconnection</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Priority *</label>
+          <select id="f-priority">
+            <option value="High">High — System fully offline</option>
+            <option value="Medium">Medium — Partial output / intermittent</option>
+            <option value="Low">Low — Minor / cosmetic</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid one">
+        <div class="fg"><label>Detailed Issue Description *</label>
+          <textarea id="f-issue" rows="4" placeholder="Describe the fault in detail: when it started, error codes shown, conditions that trigger it, any steps already taken by installer…"></textarea>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="fg"><label>Error / Fault Codes</label><input id="f-errors" placeholder="e.g. E031, E045, OT, AFCI-01" /></div>
+        <div class="fg"><label>Installer Company</label><input id="f-installer" placeholder="e.g. Bright Solar Installations" /></div>
+      </div>
+      <div class="form-section-title">Photo Evidence</div>
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('photo-input').click()" ondragover="dragOver(event)" ondrop="dropFiles(event)">
+        <input type="file" id="photo-input" accept="image/*" multiple style="display:none" onchange="handleFiles(this.files)" />
+        <div class="uz-icon">📎</div>
+        <div class="uz-text">Click to upload or drag & drop photos</div>
+        <div class="uz-hint">JPG, PNG, HEIC — up to 8 photos, 10MB each</div>
+      </div>
+      <div class="photo-previews" id="photo-previews"></div>
+      <div style="display:flex;gap:10px;margin-top:1.75rem;">
+        <button class="btn btn-red" style="flex:1;" onclick="submitClaim()">Submit Warranty Claim</button>
+        <button class="btn btn-ghost" onclick="goTo('dashboard')">Cancel</button>
+      </div>
+    </div>`;
+}
+
+function dragOver(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.add('dragover');
+}
+function dropFiles(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+}
+function handleFiles(files) {
+  const prev = document.getElementById('photo-previews');
+  Array.from(files).slice(0, 8).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const id = 'ph_' + Date.now() + Math.random().toString(36).slice(2);
+      UPLOAD_FILES[id] = e.target.result;
+      prev.insertAdjacentHTML('beforeend', `
+        <div class="photo-thumb-wrap" id="wrap-${id}">
+          <img class="photo-thumb" src="${e.target.result}" />
+          <button class="photo-remove" onclick="removePhoto('${id}')">✕</button>
+        </div>`);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function removePhoto(id) {
+  delete UPLOAD_FILES[id];
+  const el = document.getElementById('wrap-'+id);
+  if (el) el.remove();
+}
+
+async function submitClaim() {
+  const cat = document.getElementById('f-prodcat')?.value;
+  if (!cat) { toast('Please select a product category.'); return; }
+  let productVal = '';
+  if (cat === 'other') {
+    productVal = document.getElementById('f-product-other')?.value?.trim();
+    if (!productVal) { toast('Please describe the product.'); return; }
+  } else {
+    productVal = document.getElementById('f-product')?.value;
+    if (!productVal) { toast('Please select a product model.'); return; }
+  }
+  const req = { 'f-client':'Client name', 'f-contact':'Contact person', 'f-email':'Email', 'f-serial':'Serial number', 'f-region':'Region', 'f-fault':'Fault category', 'f-issue':'Issue description' };
+  for (const [id, label] of Object.entries(req)) {
+    const v = document.getElementById(id)?.value?.trim();
+    if (!v) { toast(`Please fill in: ${label}`); return; }
+  }
+  const now = new Date();
+  const yr  = now.getFullYear();
+  const mon = String(now.getMonth()+1).padStart(2,'0');
+  const id  = `WCL-${yr}-${String(DATA.claims.length + 1).padStart(3,'0')}`;
+  const dateStr = now.getDate() + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][now.getMonth()] + ' ' + yr;
+  const claim = {
+    id, status:'pending',
+    client:          document.getElementById('f-client').value.trim(),
+    contact:         document.getElementById('f-contact').value.trim(),
+    email:           document.getElementById('f-email').value.trim(),
+    phone:           document.getElementById('f-phone').value.trim() || 'Not provided',
+    productCategory: cat,
+    product:         productVal,
+    serial:          document.getElementById('f-serial').value.trim(),
+    faultCat:        document.getElementById('f-fault').value,
+    priority:        document.getElementById('f-priority').value,
+    issue:           document.getElementById('f-issue').value.trim(),
+    errorCodes:      document.getElementById('f-errors').value.trim() || 'None',
+    region:          document.getElementById('f-region').value,
+    date:            dateStr,
+    tech:            CURRENT_USER ? CURRENT_USER.fullName : 'Staff',
+    techEmail:       CURRENT_USER ? CURRENT_USER.email : 'staff@goodwe.com.au',
+    photos:          Object.values(UPLOAD_FILES),
+    notes: '', comments: [], rmaDetails: null
+  };
+  DATA.claims.unshift(claim);
+  const notif = { type:'new', text:`New claim ${id} submitted by ${claim.tech}`, time:'just now', color:'#D93B3B' };
+  addNotif(notif.type, notif.text, notif.time, notif.color);
+  await dbSaveClaim(claim);
+  await dbSaveNotif(notif);
+  refreshNav();
+  toast(`Claim ${id} submitted successfully`);
+  goTo('my-claims');
+}
+
+/* ══════════════════════════════════
+   USERS
+══════════════════════════════════ */
+function renderUsers(el) {
+  if (!DATA.users.admins) DATA.users.admins = [];
+
+  // Merge system users with dynamic users (system users shown first, no duplicates)
+  const merge = (sysRole, dataArr) => {
+    const sysList = SYSTEM_USERS.filter(u => u.role === sysRole).map(u => ({
+      ...u, region: u.region || 'Australia-wide', _isSys: true
+    }));
+    const dynIds = new Set(sysList.map(u => u.id));
+    return [...sysList, ...dataArr.filter(u => !dynIds.has(u.id))];
+  };
+
+  const admins   = merge('admin',    DATA.users.admins);
+  const approvers= merge('approver', DATA.users.approvers);
+  const techs    = merge('tech',     DATA.users.techs);
+
+  const admHtml  = admins.map(u => userCard(u, true)).join('');
+  const appHtml  = approvers.map(u => userCard(u, true)).join('');
+  const techHtml = techs.map(u => userCard(u, true)).join('');
+
+  el.innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Administrators</span>
+        <span style="font-size:11px;color:var(--ink-400);margin-left:auto;">${admins.length} user${admins.length!==1?'s':''}</span>
+      </div>
+      <div class="card-body">
+        <div class="user-grid-2">${admHtml || `<div style="font-size:13px;color:var(--ink-400);">No administrators.</div>`}</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Approvers</span>
+        <span style="font-size:11px;color:var(--ink-400);margin-left:auto;">${approvers.length} user${approvers.length!==1?'s':''}</span>
+      </div>
+      <div class="card-body">
+        <div class="user-grid-2">${appHtml || `<div style="font-size:13px;color:var(--ink-400);">No approvers yet.</div>`}</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Technical Support</span>
+        <span style="font-size:11px;color:var(--ink-400);margin-left:auto;">${techs.length} user${techs.length!==1?'s':''}</span>
+      </div>
+      <div class="card-body">
+        <div class="user-grid-2">${techHtml || `<div style="font-size:13px;color:var(--ink-400);">No tech support users yet.</div>`}</div>
+      </div>
+    </div>
+    <div style="margin-top:.5rem;padding:.75rem 1rem;background:var(--warn-bg);border-radius:var(--radius);font-size:12px;color:var(--warn);">
+      🔐 Passwords are visible only to Admin users. Keep this information confidential.
+    </div>`;
+}
+
+function userCard(u, showPass) {
+  const pw = showPass && u.password ? u.password : null;
+  const roleLabel = u.role === 'admin' ? 'Admin' : u.role === 'approver' ? 'Approver' : 'Tech Support';
+  const roleBadge = u.role === 'admin' ? 'b-rejected' : u.role === 'approver' ? 'b-rma' : 'b-approved';
+  return `<div class="user-card" style="flex-direction:column;align-items:flex-start;gap:8px;">
+    <div style="display:flex;align-items:center;gap:10px;width:100%;">
+      <div class="u-av" style="background:${u.color};">${u.init}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="u-name">${u.fullName || u.name}</div>
+        <div class="u-email" style="word-break:break-all;">${u.email}</div>
+        <div style="margin-top:4px;display:flex;gap:5px;flex-wrap:wrap;">
+          <span class="badge ${roleBadge}" style="font-size:10px;">${roleLabel}</span>
+          <span class="badge b-review" style="font-size:10px;">${u.region}</span>
+        </div>
+      </div>
+      <div class="u-actions" style="flex-shrink:0;">
+        <button class="btn btn-ghost btn-sm" onclick="openEditUser('${u.id}')">Edit</button>
+        <button class="btn btn-reject btn-sm" onclick="removeUser('${u.id}')">Remove</button>
+      </div>
+    </div>
+    ${pw ? `<div style="width:100%;background:var(--ink-50);border:1px solid var(--ink-100);border-radius:var(--radius-sm);padding:6px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+      <div>
+        <div style="font-size:10px;color:var(--ink-400);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;">Password</div>
+        <div class="mono" style="font-size:12px;color:var(--ink-800,var(--ink-900));" id="pw-${u.id}">••••••••</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="font-size:11px;" onclick="togglePw('${u.id}','${pw}',this)">Show</button>
+    </div>` : ''}
+  </div>`;
+}
+
+function togglePw(id, pw, btn) {
+  const el = document.getElementById('pw-'+id);
+  if (!el) return;
+  if (el.textContent === '••••••••') {
+    el.textContent = pw;
+    btn.textContent = 'Hide';
+  } else {
+    el.textContent = '••••••••';
+    btn.textContent = 'Show';
+  }
+}
+
+function openAddUser() {
+  document.getElementById('modal-inner').innerHTML = `
+    <div class="modal-title">Add New User</div>
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+      <div class="fg"><label>Full Name *</label><input id="nu-name" placeholder="e.g. Riley Thompson" /></div>
+      <div class="fg"><label>Email *</label><input id="nu-email" placeholder="riley.t@goodwe.com.au" type="email" /></div>
+      <div class="fg"><label>Password *</label>
+        <div style="position:relative;">
+          <input id="nu-pw" type="password" placeholder="e.g. riley1234" style="width:100%;padding:9px 40px 9px 12px;font-size:13.5px;border:1px solid var(--ink-200);border-radius:var(--radius);background:var(--ink-50);outline:none;" />
+          <button type="button" onclick="toggleInputPw('nu-pw',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:11px;color:var(--ink-400);cursor:pointer;">Show</button>
+        </div>
+        <div style="font-size:11px;color:var(--ink-400);margin-top:4px;">Recommended format: firstname+1234</div>
+      </div>
+      <div class="fg"><label>Role *</label>
+        <select id="nu-role">
+          <option value="approver">Approver</option>
+          <option value="tech">Tech Support</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div class="fg"><label>Region</label>
+        <select id="nu-region">
+          <option>QLD</option><option>NSW</option><option>VIC</option><option>SA</option><option>WA</option>
+          <option>QLD/NSW</option><option>VIC/SA</option><option>VIC/SA/WA</option><option>Australia-wide</option>
+        </select>
+      </div>
+      <div id="nu-preview" style="display:none;background:var(--ink-50);border-radius:var(--radius);padding:10px 12px;font-size:12px;color:var(--ink-600);"></div>
+      <button class="btn btn-red" onclick="addUser()">Create User Account</button>
+    </div>`;
+  // live preview
+  ['nu-name','nu-email','nu-pw','nu-role'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', updateUserPreview);
+  });
+  openModal();
+}
+
+function toggleInputPw(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.textContent = inp.type === 'password' ? 'Show' : 'Hide';
+}
+
+function updateUserPreview() {
+  const name = document.getElementById('nu-name')?.value?.trim();
+  const email = document.getElementById('nu-email')?.value?.trim();
+  const pw = document.getElementById('nu-pw')?.value;
+  const role = document.getElementById('nu-role')?.value;
+  const prev = document.getElementById('nu-preview');
+  if (!prev) return;
+  if (name && email && pw) {
+    const roleLabel = role === 'admin' ? 'Admin' : role === 'approver' ? 'Approver' : 'Tech Support';
+    prev.style.display = 'block';
+    prev.innerHTML = `<strong>Preview:</strong> ${name} · ${email} · ${roleLabel} · Password: <span class="mono">${pw}</span>`;
+  } else {
+    prev.style.display = 'none';
+  }
+}
+
+async function addUser() {
+  const name   = document.getElementById('nu-name').value.trim();
+  const email  = document.getElementById('nu-email').value.trim();
+  const pw     = document.getElementById('nu-pw').value;
+  const role   = document.getElementById('nu-role').value;
+  const region = document.getElementById('nu-region').value;
+  if (!name)                        { toast('Please enter a full name.'); return; }
+  if (!email || !email.includes('@')) { toast('Please enter a valid email address.'); return; }
+  if (!pw || pw.length < 4)         { toast('Password must be at least 4 characters.'); return; }
+  const allExisting = [...SYSTEM_USERS, ...(DATA.users.admins||[]), ...(DATA.users.approvers||[]), ...(DATA.users.techs||[])];
+  if (allExisting.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+    toast('This email address is already registered.'); return;
+  }
+  const colors  = ['#D93B3B','#185FA5','#0F6E56','#5340B0','#A05C10','#993C1D','#1557A0'];
+  const newUser = {
+    id:       'u' + Date.now(),
+    name, fullName: name, email, password: pw, region, role,
+    color:    colors[Math.floor(Math.random()*colors.length)],
+    init:     name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(),
+    active:   true
+  };
+  if (!DATA.users.admins) DATA.users.admins = [];
+  if (role === 'admin')         DATA.users.admins.push(newUser);
+  else if (role === 'approver') DATA.users.approvers.push(newUser);
+  else                          DATA.users.techs.push(newUser);
+  await dbSaveUser(newUser);
+  closeModal();
+  renderPage('users');
+  toast(`${name} added as ${role === 'admin' ? 'Admin' : role === 'approver' ? 'Approver' : 'Tech Support'}`);
+}
+
+async function removeUser(id) {
+  if (SYSTEM_USERS.find(u=>u.id===id)) { toast('System users cannot be removed.'); return; }
+  if (!DATA.users.admins) DATA.users.admins = [];
+  DATA.users.admins    = DATA.users.admins.filter(u=>u.id!==id);
+  DATA.users.approvers = DATA.users.approvers.filter(u=>u.id!==id);
+  DATA.users.techs     = DATA.users.techs.filter(u=>u.id!==id);
+  await dbDeleteUser(id);
+  renderPage('users');
+  toast('User removed');
+}
+
+function openEditUser(id) {
+  const allUsers = [...(DATA.users.admins||[]), ...DATA.users.approvers, ...DATA.users.techs];
+  const u = allUsers.find(x=>x.id===id) || SYSTEM_USERS.find(x=>x.id===id);
+  if (!u) return;
+  const isSys = !!SYSTEM_USERS.find(x=>x.id===id);
+  document.getElementById('modal-inner').innerHTML = `
+    <div class="modal-title">Edit User — ${u.fullName||u.name}</div>
+    ${isSys ? `<div style="margin-bottom:1rem;padding:8px 12px;background:var(--warn-bg);border-radius:var(--radius);font-size:12px;color:var(--warn);">⚠ This is a system user. Email and role cannot be changed.</div>` : ''}
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+      <div class="fg"><label>Full Name</label><input id="eu-name" value="${u.fullName||u.name}" /></div>
+      <div class="fg"><label>Email</label><input id="eu-email" value="${u.email}" ${isSys?'disabled style="opacity:.5"':''} /></div>
+      <div class="fg"><label>Password</label>
+        <div style="position:relative;">
+          <input id="eu-pw" type="password" value="${u.password||''}" style="width:100%;padding:9px 40px 9px 12px;font-size:13.5px;border:1px solid var(--ink-200);border-radius:var(--radius);background:var(--ink-50);outline:none;" />
+          <button type="button" onclick="toggleInputPw('eu-pw',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:11px;color:var(--ink-400);cursor:pointer;">Show</button>
+        </div>
+      </div>
+      <div class="fg"><label>Region</label><input id="eu-region" value="${u.region||''}" /></div>
+      <button class="btn btn-red" onclick="saveEditUser('${id}')">Save Changes</button>
+    </div>`;
+  openModal();
+}
+
+function saveEditUser(id) {
+  const isSys = !!SYSTEM_USERS.find(x=>x.id===id);
+  const allUsers = [...(DATA.users.admins||[]), ...DATA.users.approvers, ...DATA.users.techs];
+  let u = allUsers.find(x=>x.id===id);
+  if (!u && isSys) {
+    // Edit system user password in localStorage copy
+    const sysIdx = SYSTEM_USERS.findIndex(x=>x.id===id);
+    if (sysIdx > -1) {
+      // We can only update the dynamic data store for sys users
+      const newPw = document.getElementById('eu-pw')?.value || SYSTEM_USERS[sysIdx].password;
+      const newRegion = document.getElementById('eu-region')?.value?.trim() || SYSTEM_USERS[sysIdx].region;
+      const newName = document.getElementById('eu-name')?.value?.trim() || SYSTEM_USERS[sysIdx].fullName;
+      SYSTEM_USERS[sysIdx].password = newPw;
+      SYSTEM_USERS[sysIdx].fullName = newName;
+      SYSTEM_USERS[sysIdx].region = newRegion;
+      toast('System user updated for this session. Note: password changes to system users reset on page reload.');
+      closeModal(); renderPage('users'); return;
+    }
+  }
+  if (!u) { toast('User not found.'); return; }
+  u.fullName = document.getElementById('eu-name')?.value?.trim() || u.fullName;
+  u.name = u.fullName;
+  if (!isSys) u.email = document.getElementById('eu-email')?.value?.trim() || u.email;
+  u.password = document.getElementById('eu-pw')?.value || u.password;
+  u.region = document.getElementById('eu-region')?.value?.trim() || u.region;
+  saveData(); closeModal(); renderPage('users');
+  toast('User updated successfully');
+}
+
+/* ══════════════════════════════════
+   RMA
+══════════════════════════════════ */
+function renderRMA(el) {
+  const rmas = DATA.claims.filter(c=>c.status==='rma');
+  if (!rmas.length) {
+    el.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--ink-400);">No RMAs issued yet.</div>`;
+    return;
+  }
+  el.innerHTML = `
+    <div class="card">
+      <div class="card-head"><span class="card-title">RMA Issued — ${rmas.length}</span></div>
+      <div class="card-body-0 tbl-wrap">
+        <table>
+          <thead><tr><th>Claim ID</th><th>RMA Number</th><th>Service No.</th><th>Client</th><th>Courier</th><th>Tracking</th><th>Region</th><th>Actions</th></tr></thead>
+          <tbody>${rmas.map(c=>{
+            const r = c.rmaDetails;
+            return `<tr>
+              <td><span class="mono cl-id">${c.id}</span></td>
+              <td><span class="mono" style="color:var(--purple);font-weight:600;">${r ? r.rmaNumber : 'RMA-'+c.id.slice(-3)+'-AU'}</span></td>
+              <td><span class="mono" style="font-size:11px;">${r ? r.serviceNumber : '—'}</span></td>
+              <td>${c.client}</td>
+              <td style="font-size:12px;">${r ? r.courier : '—'}</td>
+              <td><span class="mono" style="font-size:11px;color:var(--info);">${r ? r.trackingNumber : '—'}</span></td>
+              <td><span class="badge b-review">${c.region}</span></td>
+              <td>
+                <button class="btn btn-ghost btn-sm" onclick="viewClaim('${c.id}')">Details</button>
+                <button class="btn btn-ghost btn-sm" onclick="printRMALabel('${c.id}')">Print</button>
+              </td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function printRMALabel(id) {
+  const c = DATA.claims.find(x=>x.id===id);
+  if (!c || !c.rmaDetails) { toast('No RMA details found for this claim.'); return; }
+  const r = c.rmaDetails;
+  const w = window.open('','_blank','width=600,height=500');
+  w.document.write(`<!DOCTYPE html><html><head><title>RMA Label — ${r.rmaNumber}</title>
+  <style>body{font-family:Arial,sans-serif;padding:2rem;}h2{font-size:1.5rem;border-bottom:2px solid #000;padding-bottom:.5rem;margin-bottom:1rem;}
+  .row{display:flex;gap:1rem;margin-bottom:.5rem;font-size:14px;}.key{font-weight:bold;width:140px;}.barcode{font-family:monospace;font-size:2rem;letter-spacing:4px;margin:1rem 0;border:1px solid #ccc;padding:.5rem;text-align:center;}
+  </style></head><body>
+  <h2>GoodWe Australia — RMA Return Label</h2>
+  <div class="row"><div class="key">RMA Number:</div><div>${r.rmaNumber}</div></div>
+  <div class="row"><div class="key">Service Number:</div><div>${r.serviceNumber}</div></div>
+  <div class="row"><div class="key">Courier:</div><div>${r.courier}</div></div>
+  <div class="row"><div class="key">Tracking:</div><div>${r.trackingNumber}</div></div>
+  <div class="row"><div class="key">Return To:</div><div>${r.returnAddress}</div></div>
+  <div class="row"><div class="key">Claim:</div><div>${c.id} — ${c.client}</div></div>
+  <div class="row"><div class="key">Product:</div><div>${c.product} (${c.serial})</div></div>
+  ${r.notes ? `<div class="row"><div class="key">Notes:</div><div>${r.notes}</div></div>` : ''}
+  <div class="barcode">${r.trackingNumber}</div>
+  <p style="font-size:11px;color:#666;">Issued by ${r.issuedBy} on ${r.issuedDate}</p>
+  <script>window.print();<\/script></body></html>`);
+}
+
+/* ══════════════════════════════════
+   ANALYTICS
+══════════════════════════════════ */
+function renderAnalytics(el) {
+  const claims = DATA.claims;
+  const byStatus = {};
+  const byRegion = {};
+  const byFault = {};
+  claims.forEach(c => {
+    byStatus[c.status] = (byStatus[c.status]||0)+1;
+    byRegion[c.region] = (byRegion[c.region]||0)+1;
+    const fc = c.faultCat.split('(')[0].trim().substring(0,28);
+    byFault[fc] = (byFault[fc]||0)+1;
+  });
+  const maxR = Math.max(...Object.values(byRegion),1);
+  const maxF = Math.max(...Object.values(byFault),1);
+
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Claims by Status</span></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            ${Object.entries(byStatus).map(([s,v])=>`
+              <div style="background:var(--ink-50);border-radius:var(--radius);padding:12px 14px;">
+                <div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-400);margin-bottom:4px;">${STATUS_MAP[s]?.label||s}</div>
+                <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;">${v}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Claims by Region</span></div>
+        <div class="card-body">
+          <div class="chart-bar-wrap">
+            ${Object.entries(byRegion).sort((a,b)=>b[1]-a[1]).map(([r,v])=>`
+              <div class="chart-bar-row">
+                <div class="cbr-label">${r}</div>
+                <div class="cbr-track"><div class="cbr-fill" style="width:${Math.round(v/maxR*100)}%"><span>${v}</span></div></div>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Fault Category Breakdown</span></div>
+      <div class="card-body">
+        <div class="chart-bar-wrap">
+          ${Object.entries(byFault).sort((a,b)=>b[1]-a[1]).map(([f,v])=>`
+            <div class="chart-bar-row">
+              <div class="cbr-label" style="width:160px;text-align:right;font-size:11px;">${f}</div>
+              <div class="cbr-track"><div class="cbr-fill" style="width:${Math.round(v/maxF*100)}%;background:var(--red-500)"><span>${v}</span></div></div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="card-title">Summary</span></div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+          <div style="text-align:center;padding:1rem;background:var(--ink-50);border-radius:var(--radius);">
+            <div style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--red-500);">${claims.length}</div>
+            <div style="font-size:11px;color:var(--ink-400);margin-top:4px;">Total Claims</div>
+          </div>
+          <div style="text-align:center;padding:1rem;background:var(--ink-50);border-radius:var(--radius);">
+            <div style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--success);">${Math.round(claims.filter(c=>c.status==='approved'||c.status==='rma').length/claims.length*100)}%</div>
+            <div style="font-size:11px;color:var(--ink-400);margin-top:4px;">Approval Rate</div>
+          </div>
+          <div style="text-align:center;padding:1rem;background:var(--ink-50);border-radius:var(--radius);">
+            <div style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--warn);">1.4d</div>
+            <div style="font-size:11px;color:var(--ink-400);margin-top:4px;">Avg Response</div>
+          </div>
+          <div style="text-align:center;padding:1rem;background:var(--ink-50);border-radius:var(--radius);">
+            <div style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--purple);">${claims.filter(c=>c.priority==='High').length}</div>
+            <div style="font-size:11px;color:var(--ink-400);margin-top:4px;">High Priority</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════
+   NOTIFICATIONS
+══════════════════════════════════ */
+function renderNotifs(el) {
+  el.innerHTML = `
+    <div class="card">
+      <div class="card-head"><span class="card-title">Activity Log</span><span style="font-size:11px;color:var(--ink-400);margin-left:auto;">${DATA.notifications.length} entries</span></div>
+      <div class="card-body-0 notif-list">
+        ${DATA.notifications.map(n=>`
+          <div class="notif-item">
+            <div class="notif-dot" style="background:${n.color}"></div>
+            <div>
+              <div class="notif-text">${n.text}</div>
+              <div class="notif-time">${n.time}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════
+   CSV EXPORT
+══════════════════════════════════ */
+function exportCSV() {
+  const headers = ['ID','Client','Contact','Email','Phone','Product','Serial','Fault Category','Priority','Status','Region','Date','Tech','Error Codes','Issue'];
+  const rows = DATA.claims.map(c => [
+    c.id, c.client, c.contact, c.email, c.phone, c.product, c.serial,
+    c.faultCat, c.priority, c.status, c.region, c.date, c.tech, c.errorCodes,
+    '"' + c.issue.replace(/"/g,'""') + '"'
+  ].join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type:'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `goodwe-warranty-claims-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  toast('CSV exported');
+}
+
+/* ══════════════════════════════════
+   PRODUCT CATALOG
+══════════════════════════════════ */
+const PRODUCT_CATALOG = {
+  inverter: [
+    // Single Phase NS Series
+    'GoodWe GW1000-NS (1kW)',
+    'GoodWe GW1500-NS (1.5kW)',
+    'GoodWe GW2000-NS (2kW)',
+    'GoodWe GW2500-NS (2.5kW)',
+    'GoodWe GW3000-NS (3kW)',
+    'GoodWe GW3600-NS (3.6kW)',
+    'GoodWe GW4000-NS (4kW)',
+    'GoodWe GW4600-NS (4.6kW)',
+    'GoodWe GW5000D-NS (5kW)',
+    // Single Phase MS Series
+    'GoodWe GW3000-MS (3kW)',
+    'GoodWe GW3600-MS (3.6kW)',
+    'GoodWe GW4000-MS (4kW)',
+    'GoodWe GW4600-MS (4.6kW)',
+    'GoodWe GW5000-MS (5kW)',
+    'GoodWe GW6000-MS (6kW)',
+    'GoodWe GW8000-MS (8kW)',
+    // Three Phase DT Series
+    'GoodWe GW5KT-DT (5kW)',
+    'GoodWe GW6KT-DT (6kW)',
+    'GoodWe GW8KT-DT (8kW)',
+    'GoodWe GW10KT-DT (10kW)',
+    'GoodWe GW12KT-DT (12kW)',
+    'GoodWe GW15KT-DT (15kW)',
+    'GoodWe GW17KT-DT (17kW)',
+    'GoodWe GW20KT-DT (20kW)',
+    'GoodWe GW25KT-DT (25kW)',
+    'GoodWe GW30KT-DT (30kW)',
+    'GoodWe GW33KT-DT (33kW)',
+    'GoodWe GW36KT-DT (36kW)',
+    // ESA All-in-One Single Phase
+    'GoodWe ESA3.6-S (3.6kW All-in-One Single Phase)',
+    'GoodWe ESA4.6-S (4.6kW All-in-One Single Phase)',
+    'GoodWe ESA5.0-S (5kW All-in-One Single Phase)',
+    'GoodWe ESA6.0-S (6kW All-in-One Single Phase)',
+    // ESA All-in-One Three Phase
+    'GoodWe ESA5.0-T (5kW All-in-One Three Phase)',
+    'GoodWe ESA6.0-T (6kW All-in-One Three Phase)',
+    'GoodWe ESA8.0-T (8kW All-in-One Three Phase)',
+    'GoodWe ESA10.0-T (10kW All-in-One Three Phase)',
+    'GoodWe ESA12.0-T (12kW All-in-One Three Phase)',
+    // GEP Battery Hybrid
+    'GoodWe GEP3.6K-ET (3.6kW Hybrid)',
+    'GoodWe GEP5.0K-ET (5kW Hybrid)',
+    'GoodWe GEP6.0K-ET (6kW Hybrid)',
+    'GoodWe GEP8.0K-ET (8kW Hybrid)',
+    'GoodWe GEP9.9K-2U (9.9kW Hybrid)',
+    'GoodWe GEP10KT-DT (10kW 3Ph Hybrid)',
+    'GoodWe GEP15KT-DT (15kW 3Ph Hybrid)',
+    'GoodWe GEP20KT-DT (20kW 3Ph Hybrid)',
+  ],
+  datalogger: [
+    'GoodWe WiFi Box (SEMS Portal)',
+    'GoodWe WiFi Kit (Plug-in Module)',
+    'GoodWe WiFi/LAN Kit (Dual Connectivity)',
+    'GoodWe WiFi LAN Kit 2.0 (Latest Gen)',
+  ],
+  battery: [
+    // Lynx Home Series
+    'GoodWe Lynx Home U 5.4kWh (LX U5.4-L)',
+    'GoodWe Lynx Home U 6.7kWh (LX U6.7-L)',
+    'GoodWe Lynx Home U 8.0kWh (LX U8.0-L)',
+    'GoodWe Lynx Home U 10.7kWh (LX U10.7-L)',
+    'GoodWe Lynx Home U 13.5kWh (LX U13.5-L)',
+    // Lynx Home F Series
+    'GoodWe Lynx Home F 5.0kWh (LX F5.0)',
+    'GoodWe Lynx Home F 7.5kWh (LX F7.5)',
+    'GoodWe Lynx Home F 10.0kWh (LX F10.0)',
+    'GoodWe Lynx Home F 12.5kWh (LX F12.5)',
+    // Lynx Home Plus
+    'GoodWe Lynx Home Plus 3.6kWh',
+    'GoodWe Lynx Home Plus 5.4kWh',
+    'GoodWe Lynx Home Plus 7.2kWh',
+    // Lynx C Series (Commercial)
+    'GoodWe Lynx C 30kWh (LX C30)',
+    'GoodWe Lynx C 60kWh (LX C60)',
+    'GoodWe Lynx C 90kWh (LX C90)',
+    'GoodWe Lynx C 120kWh (LX C120)',
+    // BT Series (Built-in)
+    'GoodWe BT Series 3.6kWh',
+    'GoodWe BT Series 6.0kWh',
+    'GoodWe BT Series 9.6kWh',
+    'GoodWe BT Series 12.8kWh',
+  ],
+  smartmeter: [
+    // GM Series
+    'GoodWe Smart Meter GM3001',
+    'GoodWe Smart Meter GM1001',
+    // GMK Series
+    'GoodWe Smart Meter GMK 1-Phase',
+    'GoodWe Smart Meter GMK 3-Phase',
+    'GoodWe Smart Meter GMK Pro',
+    // Homekit Series
+    'GoodWe Homekit Energy Monitor',
+    'GoodWe Homekit EV Charger Integration',
+    'GoodWe Homekit Smart Load Controller',
+    'GoodWe Homekit Bundle (Monitor + Controller)',
+  ]
+};
+
+const CATEGORY_FAULT_MAP = {
+  inverter:    ['No Output / Not Producing','MPPT Fault','Arc Fault Detection','Display / Screen Fault','Protection Mode Triggering','Overheating / Thermal Fault','Isolation Fault','Grid Disconnection','Physical Damage','Other'],
+  datalogger:  ['WiFi Connection Issue','SEMS Portal Not Connecting','Firmware Update Failed','Device Not Detected','Data Not Uploading','Physical Damage','Other'],
+  battery:     ['Not Charging','Not Discharging','BMS Fault','Capacity Degradation','Communication Error (BMS/Inverter)','Cell Imbalance','Physical Damage / Swelling','Thermal Event','Other'],
+  smartmeter:  ['Incorrect Readings','No Data Displayed','Communication Failure','Installation / Configuration Issue','Physical Damage','Other'],
+  other:       ['Hardware Fault','Firmware Issue','Communication Issue','Physical Damage','Other']
+};
+
+function updateProductModels() {
+  const cat = document.getElementById('f-prodcat')?.value;
+  const prodWrap = document.getElementById('f-product-wrap');
+  const prodOtherWrap = document.getElementById('f-product-other-wrap');
+  const prodSel = document.getElementById('f-product');
+  const faultSel = document.getElementById('f-fault');
+
+  if (!cat) {
+    if(prodWrap) prodWrap.style.display = 'none';
+    if(prodOtherWrap) prodOtherWrap.style.display = 'none';
+    return;
+  }
+
+  if (cat === 'other') {
+    if(prodWrap) prodWrap.style.display = 'none';
+    if(prodOtherWrap) prodOtherWrap.style.display = 'block';
+  } else {
+    if(prodOtherWrap) prodOtherWrap.style.display = 'none';
+    if(prodWrap) prodWrap.style.display = 'block';
+    const models = PRODUCT_CATALOG[cat] || [];
+    const catLabels = { inverter:'Inverter Model', datalogger:'DataLogger Model', battery:'Battery Model', smartmeter:'Smart Meter Model' };
+    document.getElementById('f-product-label').textContent = (catLabels[cat] || 'Product Model') + ' *';
+    if(prodSel) prodSel.innerHTML = `<option value="">Select model…</option>` + models.map(m=>`<option>${m}</option>`).join('');
+  }
+
+  // Update fault dropdown based on category
+  const faults = CATEGORY_FAULT_MAP[cat] || CATEGORY_FAULT_MAP.other;
+  if(faultSel) faultSel.innerHTML = `<option value="">Select fault type…</option>` + faults.map(f=>`<option>${f}</option>`).join('');
+}
+
+
+function openModal() { document.getElementById('modal').classList.add('open'); }
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+document.getElementById('modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+
+let _toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
